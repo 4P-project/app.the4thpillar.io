@@ -20,15 +20,13 @@ const walletSelectModalOpen = ref(false);
           lead="tight"
           class="mx-auto mb-4 max-w-2xl text-muted-800 dark:text-white xs:!text-4xl"
         >
-          Decentralized
-          <span class="font-hairline text-primary-500 underline decoration-dotted underline-offset-4">Mail</span> &
-          <span class="font-hairline text-primary-500 underline decoration-dotted underline-offset-4">Chat</span>
-          Just a Click Away
+          On-chain
+          <span class="font-hairline text-primary-500 underline decoration-dotted underline-offset-4">dMail</span> &
+          <span class="font-hairline text-primary-500 underline decoration-dotted underline-offset-4">dChat</span>
         </BaseHeading>
         <BaseParagraph size="lg" class="mx-auto mb-4 max-w-2xl text-muted-500 dark:text-muted-100">
-          Experience secure, blockchain-based messaging with our easy-to-use on-chain mail and chat app. Just click
-          <span class="text-primary-500">Connect Wallet</span> to link your MetaMask or other wallets and start
-          communicating securely!
+          Experience Web3-based communication that is non-custodial, censorship-resistant, de-platforming-resistant,
+          data mining-resistant, and immutable with permanent permissionless access.
         </BaseParagraph>
         <div class="flex items-center justify-center">
           <BaseButton color="primary" shadow="hover" class="h-12 w-44 gap-2" @click="walletSelectModalOpen = true">

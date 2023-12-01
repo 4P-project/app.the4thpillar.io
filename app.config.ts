@@ -1,7 +1,7 @@
 export default defineAppConfig({
   links: {
-    privacyPolicy: 'https://github.com/4thtech/static-assets/raw/main/pdf/privacy-policy.pdf',
-    termsOfUse: 'https://github.com/4thtech/static-assets/raw/main/pdf/2023-02-20-Block_Labs_Software_Terms.pdf',
+    privacyPolicy: 'https://the4thpillar.io/privacy-policy/',
+    termsOfUse: 'https://github.com/4P-project/static-assets/raw/main/pdf/4P-software-disclaimer.pdf',
   },
   layout: {
     title: '4thTech',
