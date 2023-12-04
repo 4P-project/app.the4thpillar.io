@@ -1,10 +1,17 @@
 export default defineAppConfig({
+  meta: {
+    title: '4thTech',
+    titleSuffix: 'On-Chain communication infrastructure',
+    description: 'Self-custodial, permissionless and decentralized email and messaging.',
+    twitter: {
+      site: '@4thtechProject',
+    },
+  },
   links: {
     privacyPolicy: 'https://the4thpillar.io/privacy-policy/',
     termsOfUse: 'https://github.com/4P-project/static-assets/raw/main/pdf/4P-software-disclaimer.pdf',
   },
   layout: {
-    title: '4thTech',
     collapse: {
       toolbar: {
         enabled: true,
