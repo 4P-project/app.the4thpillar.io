@@ -1,10 +1,10 @@
 export default defineAppConfig({
   meta: {
-    title: '4thTech',
-    titleSuffix: 'On-Chain communication infrastructure',
+    title: '4P Project',
+    titleSuffix: 'Community-build dMail & dChat project powered by Four Token.',
     description: 'Self-custodial, permissionless and decentralized email and messaging.',
     twitter: {
-      site: '@4thtechProject',
+      site: '@4pfour',
     },
   },
   links: {

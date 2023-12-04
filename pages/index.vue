@@ -1,7 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
   layout: 'empty',
-  title: 'Connect wallet',
 });
 
 const app = useAppConfig();
