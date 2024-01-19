@@ -19,11 +19,11 @@ export function useEncryptor() {
   const { address } = useAccount();
 
   const encryptorClient = useState<Encryptor>('encryptor-client');
+  const encryptorExtension = useState<EncryptorExtensionConnector>('encryptor-extension');
   const userClient = useState<User>('user-client');
   const encryptorInfo = useState<EncryptorInfo>('encryptor-info', () => ({}));
   const unwatchOnEncryptionPublicKeySet = useState<Function>('unwatch-on-encryption-public-key-set');
 
-  const encryptorExtension = new EncryptorExtensionConnector();
   let timerId: number;
 
   const initializeEncryptor = () => {
@@ -33,6 +33,7 @@ export function useEncryptor() {
       return;
     }
 
+    encryptorExtension.value = new EncryptorExtensionConnector();
     encryptorClient.value = new Encryptor({ encryptorExtension, walletClient });
     userClient.value = new User({ walletClient });
 
@@ -45,7 +46,7 @@ export function useEncryptor() {
 
   const fetchAndUpdateEncryptorInfo = async (onlyFirstTime: boolean) => {
     try {
-      const isInstalled = await encryptorExtension.isInstalled();
+      const isInstalled = await encryptorExtension.value.isInstalled();
       if (!isInstalled) {
         encryptorInfo.value = { isInstalled };
         return;
@@ -57,9 +58,9 @@ export function useEncryptor() {
       }
 
       const [isInitialized, isLocked, isUnlocked, getState, publicKey, publicKeyType] = await Promise.all([
-        encryptorExtension.isInitialized(),
-        encryptorExtension.isLocked(),
-        encryptorExtension.isUnlocked(),
+        encryptorExtension.value.isInitialized(),
+        encryptorExtension.value.isLocked(),
+        encryptorExtension.value.isUnlocked(),
         encryptorClient.value.getState(),
         encryptorClient.value.getPublicKey(),
         encryptorClient.value.getPublicKeyType(),
