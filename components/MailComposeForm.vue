@@ -76,7 +76,7 @@ const onSubmit = handleSubmit(
     }
 
     try {
-      transactionHash.value = await mailClient.send({
+      transactionHash.value = await mailClient.value.send({
         envelope,
         encryption,
         onStateChange: (state) => console.log(state),

@@ -41,7 +41,7 @@ export function usePollinationX() {
   };
 
   const disconnectPollinationX = () => {
-    clearNuxtState(['pollination-x-client', 'px-nfts', 'primary-nft']);
+    pollinationXClient.value = undefined;
     pxNfts.value = undefined;
     primaryNft.value = undefined;
   };

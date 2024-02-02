@@ -33,6 +33,11 @@ export function useMail() {
     }
 
     const remoteStorageProvider = initializeRemoteStorageProvider();
+
+    if (!remoteStorageProvider) {
+      return;
+    }
+
     const encryptionHandler = initializeEncryptionHandler();
 
     mailClient.value = new Mail({
@@ -77,7 +82,7 @@ export function useMail() {
   };
 
   return {
-    mailClient: mailClient.value,
+    mailClient,
     isLoading,
     receivedEnvelopes,
     initializeMailClient,

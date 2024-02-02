@@ -8,7 +8,7 @@ defineProps<{
 const { mailClient } = useMail();
 
 const downloadFile = async (attachment: RemoteFileInfo) => {
-  const fileContent = await mailClient.downloadAttachment(attachment);
+  const fileContent = await mailClient.value.downloadAttachment(attachment);
 
   const blob = new Blob([fileContent], { type: 'application/octet-stream' });
   const url = URL.createObjectURL(blob);

@@ -40,7 +40,7 @@ const onArchiveClick = () => {
 // };
 
 const onDeleteClick = () => {
-  mailClient.deleteMail(selectedEnvelope.value.index).catch((error) => toast.error(error.message));
+  mailClient.value.deleteMail(selectedEnvelope.value.index).catch((error) => toast.error(error.message));
   // selectedEnvelope.value = undefined;
   isPanelActive.value = false;
 };
