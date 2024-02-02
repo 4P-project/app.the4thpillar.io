@@ -1,6 +1,7 @@
 import { watchAccount } from 'use-wagmi/actions';
 
 export default defineNuxtPlugin(() => {
+  const { primaryNft, disconnectPollinationX, initializePollinationXClient } = usePollinationX();
   const { initializeEncryptor } = useEncryptor();
   const { initializeMailClient } = useMail();
   const { address } = useAccount();
@@ -8,10 +9,16 @@ export default defineNuxtPlugin(() => {
   const route = useRoute();
 
   initializeEncryptor();
+  initializePollinationXClient();
   initializeMailClient();
 
   watch([chain, address], () => {
     initializeEncryptor();
+    initializeMailClient();
+    disconnectPollinationX();
+  });
+
+  watch([primaryNft], () => {
     initializeMailClient();
   });
 

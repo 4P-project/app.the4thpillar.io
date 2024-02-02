@@ -1,12 +1,11 @@
 import type { ReceivedEnvelope } from '@4thtech-sdk/types';
 import { Mail } from '@4thtech-sdk/ethereum';
-import { PollinationX } from '@4thtech-sdk/storage';
 import { EncryptionHandler } from '@4thtech-sdk/encryption';
 import { useToast } from 'vue-toastification';
 
 export function useMail() {
   const { address } = useAccount();
-  const runtimeConfig = useRuntimeConfig();
+  const { pollinationXClient } = usePollinationX();
   const toast = useToast();
 
   const mailClient = useState<Mail>('mail-client');
@@ -15,7 +14,7 @@ export function useMail() {
   const unwatchOnNew = useState<Function>('unwatch-on-new');
 
   const initializeRemoteStorageProvider = () => {
-    return new PollinationX(runtimeConfig.public.pollinationX.url, runtimeConfig.public.pollinationX.token);
+    return pollinationXClient.value;
   };
 
   const initializeEncryptionHandler = () => {
