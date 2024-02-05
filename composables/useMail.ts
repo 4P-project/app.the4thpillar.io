@@ -11,6 +11,7 @@ export function useMail() {
   const mailClient = useState<Mail>('mail-client');
   const isLoading = useState<boolean>('fetch-all-loading', () => false);
   const receivedEnvelopes = useState<ReceivedEnvelope[]>('received-envelopes', () => []);
+  const selectedEnvelope = useState<ReceivedEnvelope | undefined>('selected-envelope');
   const unwatchOnNew = useState<Function>('unwatch-on-new');
 
   const initializeRemoteStorageProvider = () => {
@@ -26,6 +27,8 @@ export function useMail() {
   };
 
   const initializeMailClient = () => {
+    cleanState();
+
     const { walletClient } = useWallet();
 
     if (!walletClient.chain?.contracts?.mail) {
@@ -48,6 +51,11 @@ export function useMail() {
 
     fetchAll();
     listenForMailEvents();
+  };
+
+  const cleanState = () => {
+    receivedEnvelopes.value = [];
+    selectedEnvelope.value = undefined;
   };
 
   const fetchAll = () => {
@@ -85,6 +93,7 @@ export function useMail() {
     mailClient,
     isLoading,
     receivedEnvelopes,
+    selectedEnvelope,
     initializeMailClient,
   };
 }

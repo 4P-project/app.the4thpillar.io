@@ -16,11 +16,10 @@ const emits = defineEmits<{
 
 const { encryptorClient, isReadyToUse: isEncryptorReadyToUse } = useEncryptor();
 const { isNftIntegrationEnabled, primaryNft } = usePollinationX();
-const { mailClient } = useMail();
+const { mailClient, selectedEnvelope } = useMail();
 const route = useRoute();
 const toast = useToast();
 
-const selectedEnvelope = useState<ReceivedEnvelope | undefined>('selected-envelope');
 const replyContent = useState<string>('reply-content');
 
 const initialValues = ref({ mail: {} });

@@ -7,8 +7,8 @@ const props = defineProps<{
 }>();
 
 const { isNftIntegrationEnabled, primaryNft } = usePollinationX();
+const { selectedEnvelope } = useMail();
 
-const selectedEnvelope = useState<ReceivedEnvelope | undefined>('selected-envelope');
 const isPanelActive = useState<boolean>('is-panel-active', () => false);
 
 const search = ref('');

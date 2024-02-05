@@ -41,9 +41,11 @@ export function usePollinationX() {
   };
 
   const disconnectPollinationX = () => {
-    pollinationXClient.value = undefined;
-    pxNfts.value = undefined;
-    primaryNft.value = undefined;
+    if (isNftIntegrationEnabled) {
+      pollinationXClient.value = undefined;
+      pxNfts.value = undefined;
+      primaryNft.value = undefined;
+    }
   };
 
   const setPrimaryNft = (nft: Nft) => {

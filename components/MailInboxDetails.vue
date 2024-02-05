@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { ReceivedEnvelope } from '@4thtech-sdk/types';
 import { saveAs } from 'file-saver';
 import { useToast } from 'vue-toastification';
 
-const { mailClient } = useMail();
+const { mailClient, selectedEnvelope } = useMail();
 const toast = useToast();
 
 const isPanelActive = useState<boolean>('is-panel-active');
-const selectedEnvelope = useState<ReceivedEnvelope>('selected-envelope');
 const replyContent = useState<string>('reply-content');
 
 const replyMessage = ref();
@@ -25,6 +23,10 @@ const onForwardClick = () => {
 };
 
 const onArchiveClick = () => {
+  if (!selectedEnvelope.value) {
+    return;
+  }
+
   const jsonString = JSON.stringify(
     selectedEnvelope.value,
     (_key, value) => (typeof value === 'bigint' ? value.toString() : value),
@@ -40,6 +42,10 @@ const onArchiveClick = () => {
 // };
 
 const onDeleteClick = () => {
+  if (!selectedEnvelope.value) {
+    return;
+  }
+
   mailClient.value.deleteMail(selectedEnvelope.value.index).catch((error) => toast.error(error.message));
   // selectedEnvelope.value = undefined;
   isPanelActive.value = false;
