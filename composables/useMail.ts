@@ -58,14 +58,30 @@ export function useMail() {
     selectedEnvelope.value = undefined;
   };
 
-  const fetchAll = () => {
-    if (address.value) {
-      isLoading.value = true;
-      mailClient.value.fetchAll(address.value).then((envelopes) => {
-        receivedEnvelopes.value = envelopes.reverse();
-        isLoading.value = false;
-      });
+  const fetchAll = async () => {
+    if (!address.value) {
+      return;
     }
+
+    isLoading.value = true;
+
+    const mailsCount = await mailClient.value.count(address.value);
+    const pageSize = 50n;
+    const pageNumber = (mailsCount + pageSize - 1n) / pageSize;
+    const fetchPromises = [];
+
+    for (let currentPage = 1n; currentPage <= pageNumber; currentPage++) {
+      fetchPromises.push(mailClient.value.fetchPaginated(address.value, currentPage, pageSize));
+    }
+
+    const results = await Promise.allSettled(fetchPromises);
+    const isFulfilled = (
+      result: PromiseSettledResult<ReceivedEnvelope[]>,
+    ): result is PromiseFulfilledResult<ReceivedEnvelope[]> => result.status === 'fulfilled';
+    const envelopes = results.filter(isFulfilled).flatMap((result) => result.value);
+
+    receivedEnvelopes.value = envelopes.reverse();
+    isLoading.value = false;
   };
 
   const listenForNewEnvelopes = () => {
