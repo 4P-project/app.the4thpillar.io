@@ -83,7 +83,7 @@ const facts = [
               target="_blank"
               class="font-sans text-sm text-primary-500 underline-offset-4 hover:underline"
             >
-              Terms of Use
+              User Agreement
             </a>
           </p>
 

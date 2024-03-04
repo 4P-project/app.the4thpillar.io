@@ -9,7 +9,7 @@ export default defineAppConfig({
   },
   links: {
     privacyPolicy: 'https://the4thpillar.io/privacy-policy/',
-    termsOfUse: 'https://github.com/4P-project/static-assets/raw/main/pdf/4P-software-disclaimer.pdf',
+    termsOfUse: 'https://github.com/4P-project/static-assets/raw/main/pdf/end-user-agreement.pdf',
   },
   layout: {
     collapse: {
