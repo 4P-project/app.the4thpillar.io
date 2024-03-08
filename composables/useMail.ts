@@ -49,8 +49,9 @@ export function useMail() {
       encryptionHandler,
     });
 
-    fetchAll();
-    listenForMailEvents();
+    fetchAll().then(() => {
+      listenForMailEvents();
+    });
   };
 
   const cleanState = () => {

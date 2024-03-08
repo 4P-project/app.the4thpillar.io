@@ -4,6 +4,7 @@ export default defineNuxtPlugin(() => {
   const { primaryNft, disconnectPollinationX, initializePollinationXClient } = usePollinationX();
   const { initializeEncryptor } = useEncryptor();
   const { initializeMailClient } = useMail();
+  const { initializeChatClient } = useChat();
   const { address } = useAccount();
   const { chain } = useWagmiNetwork();
   const route = useRoute();
@@ -11,10 +12,12 @@ export default defineNuxtPlugin(() => {
   initializeEncryptor();
   initializePollinationXClient();
   initializeMailClient();
+  initializeChatClient();
 
   watch([chain, address], () => {
     initializeEncryptor();
     initializeMailClient();
+    initializeChatClient();
     disconnectPollinationX();
   });
 
