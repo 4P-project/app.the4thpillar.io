@@ -1,4 +1,4 @@
-import type { EncryptorState } from '@4thtech-sdk/types';
+import { EncryptorState } from '@4thtech-sdk/types';
 import { Encryptor, User } from '@4thtech-sdk/ethereum';
 import { EncryptorExtensionConnector } from '@4thtech-sdk/encryptor';
 
@@ -24,7 +24,8 @@ export function useEncryptor() {
   const encryptorInfo = useState<EncryptorInfo>('encryptor-info', () => ({}));
   const unwatchOnEncryptionPublicKeySet = useState<Function>('unwatch-on-encryption-public-key-set');
 
-  let timerId: number;
+  const fetchTimeoutId = ref();
+  const isFetching = ref(false);
 
   const initializeEncryptor = () => {
     const { walletClient } = useWallet();
@@ -37,14 +38,27 @@ export function useEncryptor() {
     encryptorClient.value = new Encryptor({ encryptorExtension: encryptorExtension.value, walletClient });
     userClient.value = new User({ walletClient });
 
-    fetchAndUpdateEncryptorInfo(true).then(() => {
-      timerId = setInterval(fetchAndUpdateEncryptorInfo, REFRESH_INTERVAL_MS);
-    });
-
+    scheduleNextFetch(true);
     listenForEvents();
   };
 
-  const fetchAndUpdateEncryptorInfo = async (onlyFirstTime: boolean) => {
+  const scheduleNextFetch = (immediate = false) => {
+    clearTimeout(fetchTimeoutId.value);
+
+    const delay = immediate ? 0 : REFRESH_INTERVAL_MS;
+
+    fetchTimeoutId.value = setTimeout(async () => {
+      await fetchAndUpdateEncryptorInfo();
+    }, delay);
+  };
+
+  const fetchAndUpdateEncryptorInfo = async () => {
+    if (isFetching.value) {
+      return;
+    }
+
+    isFetching.value = true;
+
     try {
       const isInstalled = await encryptorExtension.value.isInstalled();
       if (!isInstalled) {
@@ -52,15 +66,7 @@ export function useEncryptor() {
         return;
       }
 
-      let isPublicKeyStored = false;
-      if (onlyFirstTime && address.value) {
-        isPublicKeyStored = await encryptorClient.value.isUserAddressInitialized(address.value);
-      }
-
-      const [isInitialized, isLocked, isUnlocked, getState, publicKey, publicKeyType] = await Promise.all([
-        encryptorExtension.value.isInitialized(),
-        encryptorExtension.value.isLocked(),
-        encryptorExtension.value.isUnlocked(),
+      const [getState, publicKey, publicKeyType] = await Promise.all([
         encryptorClient.value.getState(),
         encryptorClient.value.getPublicKey(),
         encryptorClient.value.getPublicKeyType(),
@@ -68,16 +74,23 @@ export function useEncryptor() {
 
       Object.assign(encryptorInfo.value, {
         isInstalled,
-        isInitialized,
-        isLocked,
-        isUnlocked,
+        isInitialized: getState !== EncryptorState.NOT_GENERATED,
+        isLocked: getState === EncryptorState.LOCKED,
+        isUnlocked: getState === EncryptorState.UNLOCKED,
         getState,
         publicKey,
         publicKeyType,
-        isPublicKeyStored: onlyFirstTime ? isPublicKeyStored : encryptorInfo.value.isPublicKeyStored,
+        isPublicKeyStored: encryptorInfo.value.isPublicKeyStored,
       });
+
+      if (address.value && !encryptorInfo.value.isPublicKeyStored) {
+        encryptorInfo.value.isPublicKeyStored = await encryptorClient.value.isUserAddressInitialized(address.value);
+      }
     } catch (e) {
       // console.error('Error fetching encryptor info:', e);
+    } finally {
+      isFetching.value = false;
+      scheduleNextFetch();
     }
   };
 
@@ -119,7 +132,8 @@ export function useEncryptor() {
   );
 
   onUnmounted(() => {
-    if (timerId) clearInterval(timerId);
+    clearTimeout(fetchTimeoutId.value);
+    stopListeningForEvents();
   });
 
   return {

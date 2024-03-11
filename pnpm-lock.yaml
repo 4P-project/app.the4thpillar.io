@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.2.2
     version: 0.2.2
   '@4thtech-sdk/encryptor':
-    specifier: ^0.2.3
-    version: 0.2.3
+    specifier: ^0.2.4
+    version: 0.2.4
   '@4thtech-sdk/ethereum':
     specifier: ^0.4.0
     version: 0.4.0(typescript@5.2.2)(zod@3.22.4)
@@ -125,8 +125,8 @@ packages:
     resolution: {integrity: sha512-Fh/4N6OdPfjrw732yuTpJYElrS4hUrr15IPj/Gb1MdzKb4p6kroTlHj5MJ+jzpxL2JMWhwDVMxndVlUST51XAw==}
     dev: false
 
-  /@4thtech-sdk/encryptor@0.2.3:
-    resolution: {integrity: sha512-/OZ5kTvfssY5KS2TLjwBMOYpv3CANmXwk+wTaupupRk005GBNqEl1LBoyVpUXpqSIFLERgCPa1cvcGXKYm+tZw==}
+  /@4thtech-sdk/encryptor@0.2.4:
+    resolution: {integrity: sha512-YG4pdoEKv/wPMne1Jj2rrY+JrtsL7VtEqNwG6b70P9JgQhkHkIvDu/Lw0UQv1GBUzPjbTKt4LntzRKuQA0eSWg==}
     dev: false
 
   /@4thtech-sdk/ethereum@0.4.0(typescript@5.2.2)(zod@3.22.4):
