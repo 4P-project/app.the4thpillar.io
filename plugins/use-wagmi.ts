@@ -2,7 +2,7 @@ import { UseWagmiPlugin, configureChains, createConfig } from 'use-wagmi';
 import {
   artheraTestnet,
   edgewareTestnet,
-  fantomTestnet,
+  fantomSonicTestnet,
   gnosisChiado,
   immu3Testnet,
   mantleSepoliaTestnet,
@@ -31,7 +31,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       immu3Testnet,
       zetachainAthensTestnet,
       mantleSepoliaTestnet,
-      fantomTestnet,
+      fantomSonicTestnet,
       gnosisChiado,
     ],
     [publicProvider()],
