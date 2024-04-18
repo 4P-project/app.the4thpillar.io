@@ -6,20 +6,20 @@ settings:
 
 dependencies:
   '@4thtech-sdk/encryption':
-    specifier: ^0.2.3
-    version: 0.2.3
+    specifier: ^0.2.4
+    version: 0.2.4
   '@4thtech-sdk/encryptor':
-    specifier: ^0.2.5
-    version: 0.2.5
+    specifier: ^0.3.0
+    version: 0.3.0
   '@4thtech-sdk/ethereum':
-    specifier: ^0.4.4
-    version: 0.4.4
+    specifier: ^0.4.5
+    version: 0.4.5
   '@4thtech-sdk/storage':
-    specifier: ^0.3.3
-    version: 0.3.3
+    specifier: ^0.3.4
+    version: 0.3.4
   '@4thtech-sdk/types':
-    specifier: ^0.3.3
-    version: 0.3.3
+    specifier: ^0.3.4
+    version: 0.3.4
   '@4thtech-sdk/utils':
     specifier: ^0.0.1
     version: 0.0.1
@@ -121,35 +121,35 @@ devDependencies:
 
 packages:
 
-  /@4thtech-sdk/encryption@0.2.3:
-    resolution: {integrity: sha512-JsRtdi0epubgXUigOVpU2F0wtDtse2DmjNI1CpuoiABJTIg5T/BuMguR/ySTo9D71lt83ypJMz/8P58S09v0Sg==}
+  /@4thtech-sdk/encryption@0.2.4:
+    resolution: {integrity: sha512-S2Vi5aVbKzQ28p5Vu7ZewQcL3o4vBxlmoqgKzQJdfkUEqnHh8hrDQe+SNIFwMkyaGenzwnYjzwqFVmGzIPLfMQ==}
     dev: false
 
-  /@4thtech-sdk/encryptor@0.2.5:
-    resolution: {integrity: sha512-2QYCik38RUnw4FrB3MQ/2EAjoojEFHtZsAUZkc8zUUO0Lh0ZN2lfjvV2/vn7uqJc1anXxQQWq0SVTxpfgui5BQ==}
+  /@4thtech-sdk/encryptor@0.3.0:
+    resolution: {integrity: sha512-d9K3CEaBt8nGqyzr2KWzSPj78SMOMX5lV2UCAs5il0HVXpUQ4z5imHo3QvHyyBsmwzWLUMNsA7gQ/aqLYgzNNQ==}
     dev: false
 
-  /@4thtech-sdk/ethereum@0.4.4:
-    resolution: {integrity: sha512-Fbg5gzdvX7GPfZVKmIth9VFLXlL7fW2/UOjgIqqpg/cMdCzDU6x/wJoFFu/XdALqzvTespwkR1BSQJFcwn28kQ==}
+  /@4thtech-sdk/ethereum@0.4.5:
+    resolution: {integrity: sha512-CECQbDAZtfCOwiYiwkIxMXjf/Annpi8/nssHclG0QnQYi8cABfidY6r5MnMk7skZkgmDqsmdMuPRsRIMMmlSLQ==}
     dependencies:
-      ethers: 6.11.1
+      ethers: 6.12.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /@4thtech-sdk/storage@0.3.3:
-    resolution: {integrity: sha512-LksyD8jAdBU1YnwQe5t5vVEbfpJ5jXl/wb0IJhM2Tz2m0AF0kNee331hQfMRVaCXLhZh76pkUYTPVqkeVgQ7pQ==}
+  /@4thtech-sdk/storage@0.3.4:
+    resolution: {integrity: sha512-aSvABE1XQvL7Csgvh2suB7uVbEwYAgWCqVjsZ3fS68z6WLVD6mtjiL7PwqsMvHmXj7ty00T9kqXRfNTEgW4xLw==}
     dependencies:
-      axios: 1.6.1
+      axios: 1.6.8
       form-data: 4.0.0
       tar-stream: 3.1.6
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@4thtech-sdk/types@0.3.3:
-    resolution: {integrity: sha512-yOEajDRQPYYvtqFpe9JC6XSGgcWriNqr2RpcnsxK3Bb/2HdbQvHKqlnfqwt1Ru+ONbsKyDXu5F61qM8CStsm1Q==}
+  /@4thtech-sdk/types@0.3.4:
+    resolution: {integrity: sha512-tc1iMdiuux3gfFIDnXnXuiwf0hWD7RIeDuid62AnzdND1WweNQKjSnG7661yec/PhGbJBPl4qD9d63GXXRCrqA==}
     dev: false
 
   /@4thtech-sdk/utils@0.0.1:
@@ -4041,10 +4041,10 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
-  /axios@1.6.1:
-    resolution: {integrity: sha512-vfBmhDpKafglh0EldBEbVuoe7DyAavGSLWhuSm5ZSEKQnHhBf0xAAwybbNH1IkrJNGnS/VG4I5yxig1pCEXE4g==}
+  /axios@1.6.8:
+    resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
     dependencies:
-      follow-redirects: 1.15.3
+      follow-redirects: 1.15.6
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -5723,8 +5723,8 @@ packages:
       fast-safe-stringify: 2.1.1
     dev: false
 
-  /ethers@6.11.1:
-    resolution: {integrity: sha512-mxTAE6wqJQAbp5QAe/+o+rXOID7Nw91OZXvgpjDa1r4fAbq2Nu314oEZSbjoRLacuCzs7kUC3clEvkCQowffGg==}
+  /ethers@6.12.0:
+    resolution: {integrity: sha512-zL5NlOTjML239gIvtVJuaSk0N9GQLi1Hom3ZWUszE5lDTQE/IVB62mrPkQ2W1bGcZwVGSLaetQbWNQSvI4rGDQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@adraffy/ens-normalize': 1.10.1
@@ -5923,8 +5923,8 @@ packages:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
     dev: true
 
-  /follow-redirects@1.15.3:
-    resolution: {integrity: sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==}
+  /follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
