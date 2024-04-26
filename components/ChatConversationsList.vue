@@ -6,7 +6,7 @@ const newConversationModalOpen = ref(false);
 
 <template>
   <div
-    class="relative z-[9] h-screen w-16 border-muted-200 bg-white dark:border-muted-700 dark:bg-muted-800 sm:w-20 lg:border-r ltablet:border-r"
+    class="relative z-[9] h-screen w-16 overflow-y-auto border-muted-200 bg-white dark:border-muted-700 dark:bg-muted-800 sm:w-20 lg:border-r ltablet:border-r"
   >
     <div class="flex h-full flex-col">
       <button

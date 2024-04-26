@@ -12,14 +12,14 @@ dependencies:
     specifier: ^0.3.0
     version: 0.3.0
   '@4thtech-sdk/ethereum':
-    specifier: ^0.4.7
-    version: 0.4.7
+    specifier: ^0.4.8
+    version: 0.4.8
   '@4thtech-sdk/storage':
     specifier: ^0.3.4
     version: 0.3.4
   '@4thtech-sdk/types':
-    specifier: ^0.3.4
-    version: 0.3.4
+    specifier: ^0.3.5
+    version: 0.3.5
   '@4thtech-sdk/utils':
     specifier: ^0.0.1
     version: 0.0.1
@@ -129,8 +129,8 @@ packages:
     resolution: {integrity: sha512-d9K3CEaBt8nGqyzr2KWzSPj78SMOMX5lV2UCAs5il0HVXpUQ4z5imHo3QvHyyBsmwzWLUMNsA7gQ/aqLYgzNNQ==}
     dev: false
 
-  /@4thtech-sdk/ethereum@0.4.7:
-    resolution: {integrity: sha512-g3KOTx+jO0sXrIx5AzhI5AYtv4rSeG5KqfIpLjHKsAXT0HSZ1wWXRBC0o3peZ9xuqr5AqQN4r/z5Um6gM6uYMQ==}
+  /@4thtech-sdk/ethereum@0.4.8:
+    resolution: {integrity: sha512-3sykbRtO7GCVZ8gnZZQXPnNS8007TH9ikZsf9AhPkNYYElUaUdFUeX6ATVw7hdVVO5p2j0Z6h/VXFHLlwwc7Vg==}
     dependencies:
       ethers: 6.12.0
     transitivePeerDependencies:
@@ -148,8 +148,8 @@ packages:
       - debug
     dev: false
 
-  /@4thtech-sdk/types@0.3.4:
-    resolution: {integrity: sha512-tc1iMdiuux3gfFIDnXnXuiwf0hWD7RIeDuid62AnzdND1WweNQKjSnG7661yec/PhGbJBPl4qD9d63GXXRCrqA==}
+  /@4thtech-sdk/types@0.3.5:
+    resolution: {integrity: sha512-f2V0fzjqdzc+9WdS232b+hsK+sBiJ9VNwqc7Jj3YGvNyR1bFODpXVdITBAcPoHCu0STM7PwKnBAptX6s+M7h4Q==}
     dev: false
 
   /@4thtech-sdk/utils@0.0.1:

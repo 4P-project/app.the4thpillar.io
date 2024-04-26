@@ -1,9 +1,11 @@
 import type { Address, Conversation, ConversationHash, Message, ReceivedMessage } from '@4thtech-sdk/types';
 import { Chat } from '@4thtech-sdk/ethereum';
+import { useToast } from 'vue-toastification';
 import type { ConversationWithMessages, GroupConversationConfig, TmpSentMessage } from '~/types/chat';
 
 export function useChat() {
   const { address } = useAccount();
+  const toast = useToast();
 
   const chatClient = useState<Chat>('chat-client');
   const isConversationsLoading = useState<boolean>('conversations-loading', () => false);
@@ -11,6 +13,7 @@ export function useChat() {
   const conversations = useState<Map<ConversationHash, ConversationWithMessages>>('conversations', () => new Map());
   const selectedConversation = useState<ConversationWithMessages | undefined>('selected-conversation');
   const unwatchOnMemberAddedToConversation = useState<Function>('unwatch-on-member-added-to-conversation');
+  const unwatchOnMemberRemovedFromConversation = useState<Function>('unwatch-on-member-removed-from-conversation');
   const unwatchOnMessageSent = useState<Map<ConversationHash, Function>>('unwatch-on-message-sent', () => new Map());
 
   const initializeChatClient = () => {
@@ -146,11 +149,50 @@ export function useChat() {
   };
 
   const listenForMemberAddedToConversation = () => {
+    if (!address.value) {
+      return;
+    }
+
     unwatchOnMemberAddedToConversation.value = chatClient.value.onMemberAddedToConversation(
       null,
-      address.value,
+      null,
       (conversationHash, _member) => {
-        fetchConversation(conversationHash);
+        const conversation = conversations.value.get(conversationHash);
+
+        if (conversation && !conversation.members.includes(_member)) {
+          conversation.members.push(_member);
+        } else if (address.value === _member) {
+          fetchConversation(conversationHash);
+        }
+      },
+    );
+  };
+
+  const listenForMemberRemovedFromConversation = () => {
+    if (!address.value) {
+      return;
+    }
+
+    unwatchOnMemberAddedToConversation.value = chatClient.value.onMemberRemovedFromConversation(
+      null,
+      null,
+      (conversationHash, _member) => {
+        const conversation = conversations.value.get(conversationHash);
+
+        if (!conversation) {
+          return;
+        }
+
+        if (address.value !== _member) {
+          conversation.members = conversation.members.filter((member) => member !== _member);
+          return;
+        }
+
+        conversations.value.delete(conversationHash);
+
+        if (selectedConversation.value?.hash === conversationHash) {
+          selectedConversation.value = undefined;
+        }
       },
     );
   };
@@ -161,11 +203,13 @@ export function useChat() {
 
     // Then add new listeners
     listenForMemberAddedToConversation();
+    listenForMemberRemovedFromConversation();
     listenForNewMessages();
   };
 
   const stopListeningForEvents = () => {
     unwatchOnMemberAddedToConversation.value?.();
+    unwatchOnMemberRemovedFromConversation.value?.();
     unwatchOnMessageSent.value.forEach((unwatch) => {
       unwatch();
     });
@@ -252,6 +296,28 @@ export function useChat() {
     return chatClient.value.sendMessage(receiver, message, encryptMessage);
   };
 
+  const addMembers = (members: Address[]) => {
+    if (!selectedConversation.value) {
+      return;
+    }
+
+    return chatClient.value.addMembersToGroupConversation(selectedConversation.value.hash, members);
+  };
+
+  const removeMember = (member: Address) => {
+    if (!selectedConversation.value) {
+      return;
+    }
+
+    const { hash } = selectedConversation.value;
+
+    try {
+      return chatClient.value.removeMemberFromGroupConversation(hash, member);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    }
+  };
+
   return {
     chatClient,
     isConversationsLoading,
@@ -263,5 +329,7 @@ export function useChat() {
     createOneToOneConversation,
     createGroupConversation,
     sendMessage,
+    addMembers,
+    removeMember,
   };
 }

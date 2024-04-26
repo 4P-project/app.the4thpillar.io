@@ -34,9 +34,9 @@
   "dependencies": {
     "@4thtech-sdk/encryption": "^0.2.4",
     "@4thtech-sdk/encryptor": "^0.3.0",
-    "@4thtech-sdk/ethereum": "^0.4.7",
+    "@4thtech-sdk/ethereum": "^0.4.8",
     "@4thtech-sdk/storage": "^0.3.4",
-    "@4thtech-sdk/types": "^0.3.4",
+    "@4thtech-sdk/types": "^0.3.5",
     "@4thtech-sdk/utils": "^0.0.1",
     "@headlessui/vue": "^1.7.16",
     "@vee-validate/zod": "^4.11.8",

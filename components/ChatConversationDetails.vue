@@ -1,18 +1,55 @@
 <script setup lang="ts">
+import ChatAddMembers from '~/components/ChatAddMembers.vue';
+
 defineProps<{ open: boolean }>();
 
-const { selectedConversation: conversation } = useChat();
+const { address } = useAccount();
+const { selectedConversation: conversation, removeMember } = useChat();
 
 const emit = defineEmits(['close']);
 
+const newMemebersModalOpen = ref(false);
+
 const close = () => {
   emit('close');
+};
+
+const truncateMiddleText = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  const start = text.substring(0, maxLength / 2 - 2);
+  const end = text.substring(text.length - maxLength / 2 + 2);
+  return `${start}...${end}`;
+};
+
+const canAddMembers = () => {
+  const { isGroup, creator, isOnlyCreatorAllowedToAddMembers } = conversation.value || {};
+
+  if (!isGroup) {
+    return false;
+  }
+
+  //  Allow adding members if the current user is the creator or if anyone can add members
+  return creator === address.value || !isOnlyCreatorAllowedToAddMembers;
+};
+
+const canRemoveMember = (member: string) => {
+  const { isGroup, creator } = conversation.value || {};
+
+  if (!isGroup) {
+    return false;
+  }
+
+  // If member is removing themselves or the group creator is performing the action
+  return member === address.value || creator === address.value;
 };
 </script>
 
 <template>
   <div
-    class="fixed end-0 top-0 z-20 h-full w-[390px] bg-white transition-transform duration-300 dark:bg-muted-800 ltablet:w-[310px]"
+    class="fixed end-0 top-0 z-20 h-full w-[390px] overflow-y-auto bg-white transition-transform duration-300 dark:bg-muted-800 ltablet:w-[310px]"
     :class="open ? 'translate-x-0' : 'translate-x-full'"
   >
     <div class="flex h-16 w-full items-center justify-between px-8">
@@ -50,7 +87,7 @@ const close = () => {
           </div>
         </div>
       </div>
-      <!-- User details -->
+      <!-- Conversation details -->
       <div v-else-if="conversation" class="mt-8">
         <div class="flex items-center justify-center">
           <ConversationAvatar :hash="conversation.hash" size="2xl" />
@@ -78,16 +115,38 @@ const close = () => {
               }}</span>
             </div>
           </div>
-          <!--          <div class="mt-6">-->
-          <!--                                            <BaseButton shape="curved" class="w-full">-->
-          <!--                                              <span> View {{ conversation.name }}'s profile </span>-->
-          <!--                                            </BaseButton>-->
-          <!--                                            <button class="mt-3 font-sans text-sm text-primary-500 underline-offset-4 hover:underline">-->
-          <!--                                              Send a friend request-->
-          <!--                                            </button>-->
-          <!--          </div>-->
+          <div class="mt-6">
+            <div class="mb-3 flex items-center justify-center gap-2 px-4">
+              <span class="font-sans text-sm text-muted-400">Members</span>
+              <BaseButtonIcon v-if="canAddMembers()" size="sm" @click="newMemebersModalOpen = true">
+                <Icon name="ph:user-plus" class="h-4 w-4" />
+              </BaseButtonIcon>
+            </div>
+            <div v-for="member in conversation.members" :key="member" class="mb-3 flex items-center gap-2 truncate">
+              <UserAvatar :address="member" size="xs" shape="full" class="pointer-events-none" />
+              <div class="pointer-events-none">
+                <BaseHeading size="sm" weight="semibold" lead="tight">
+                  <span>{{ truncateMiddleText(member, 25) }}</span>
+                </BaseHeading>
+                <BaseParagraph v-if="conversation.creator === member" size="xs" lead="none" class="text-left">
+                  <span class="text-muted-500 dark:text-muted-400">Creator</span>
+                </BaseParagraph>
+              </div>
+              <div class="ms-auto">
+                <Icon
+                  v-if="canRemoveMember(member)"
+                  name="ph:trash"
+                  class="h-4 w-4 text-muted-400 hover:cursor-pointer hover:text-muted-800 dark:hover:text-white"
+                  @click="removeMember(member)"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Add members modal -->
+  <ChatAddMembers :open="newMemebersModalOpen" @close="newMemebersModalOpen = false" />
 </template>
