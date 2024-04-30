@@ -278,13 +278,13 @@ export function useChat() {
     };
     selectedConversation.value.messages.set(tmpSentMessage.index, tmpSentMessage);
 
-    usePublicClient()
-      .value.waitForTransactionReceipt({ hash: transactionHash })
-      .then((txReceipt) => {
-        if (txReceipt.status === 'success') {
-          selectedConversation.value?.messages.delete(tmpSentMessage.index);
-        }
-      });
+    const txReceipt = await usePublicClient().value.waitForTransactionReceipt({
+      hash: transactionHash,
+    });
+
+    if (txReceipt.status === 'success') {
+      selectedConversation.value?.messages.delete(tmpSentMessage.index);
+    }
   };
 
   const sendDirectMessage = (members: readonly Address[], message: Message, encryptMessage: boolean) => {

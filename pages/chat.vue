@@ -76,9 +76,9 @@ const submitMessage = async () => {
     messageInput.value = '';
   } catch (error) {
     toast.error(error instanceof Error ? error.message : 'An unexpected error occurred');
+  } finally {
+    isMessageSending.value = false;
   }
-
-  isMessageSending.value = false;
 };
 
 const isEncryptorWidgetVisible = computed(
