@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   extends: ['@shuriken-ui/nuxt'],
   modules: ['@use-wagmi/nuxt', '@nuxt/image'],
   css: [
-    '@fontsource-variable/inter/index.css',
+    '@fontsource-variable/space-grotesk/index.css',
     '@fontsource-variable/karla/index.css',
     'vue-toastification/dist/index.css',
   ],

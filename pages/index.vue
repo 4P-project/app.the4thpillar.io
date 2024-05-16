@@ -22,7 +22,7 @@ const facts = [
   {
     icon: 'ph:messenger-logo',
     title: 'On-Chain communication',
-    description: 'Experience permissionless messaging; every email/message is a secure blockchain transaction.',
+    description: 'Experience self-custodial messaging; every email/message is a secure blockchain transaction.',
   },
   {
     icon: 'ph:lock-key-duotone',
@@ -32,7 +32,7 @@ const facts = [
   {
     icon: 'ph:database-duotone',
     title: 'Decentralized Storage',
-    description: 'Self-custodial data storage powered by PollinationX.',
+    description: 'Self-custodial data storage powered by PollinationX NFTs.',
   },
   {
     icon: 'ph:lightbulb-filament-duotone',
@@ -64,7 +64,7 @@ const facts = [
         </div>
         <div>
           <BaseHeading as="h2" size="2xl" lead="relaxed" weight="medium" class="mt-6">
-            Welcome to 4P dMail & dChat.
+            Welcome to 4P Email & Chat Super App.
           </BaseHeading>
           <BaseParagraph size="sm" class="mb-6 text-muted-400"> Connect your wallet to access the app </BaseParagraph>
           <!-- Terms -->
@@ -88,7 +88,7 @@ const facts = [
           </p>
 
           <div class="mt-5 flex items-center">
-            <BaseCheckbox v-model="termsAccepted" label="I read and accepted" shape="rounded" color="success" />
+            <BaseCheckbox v-model="termsAccepted" label="I read and accepted" shape="rounded" color="primary" />
           </div>
           <!-- 	Connectors list	 -->
           <div class="mt-4 flex flex-col justify-center space-y-2">
