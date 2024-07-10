@@ -5,7 +5,7 @@ defineProps<{
   attachments: Attachment[];
 }>();
 
-const { mailClient } = useMail();
+const { mailClient } = useMailClient();
 
 const downloadFile = async (attachment: RemoteFileInfo) => {
   const fileContent = await mailClient.value.downloadAttachment(attachment);

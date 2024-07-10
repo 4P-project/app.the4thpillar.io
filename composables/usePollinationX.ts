@@ -1,5 +1,6 @@
 import type { Address } from 'viem';
-import { encodeFunctionData, parseEther, toHex } from 'viem';
+import { encodeFunctionData, toHex } from 'viem';
+import { useStorage } from '@vueuse/core';
 import { useToast } from 'vue-toastification';
 import { PollinationX } from '@4thtech-sdk/storage';
 import pollinationXAbi from '~/assets/abi/pollination-x.json';
@@ -13,8 +14,10 @@ export function usePollinationX() {
   const { signMessageAsync } = useSignMessage();
   const toast = useToast();
 
+  const signature = useStorage(`pollination-x-${address.value}`, '');
+
   const pollinationXConfig: PollinationXConfig = {
-    url: 'https://6cp0k0.pollinationx.io',
+    url: 'https://u4jc7p.pollinationx.io',
     authMessage:
       'This request will check your PollinationX storage NFT and it will not trigger a blockchain transaction or cost any gas fees.',
   };
@@ -22,12 +25,7 @@ export function usePollinationX() {
   const pollinationXClient = useState<PollinationX | undefined>('pollination-x-client');
   const pxNfts = useState<GetNft | undefined>('px-nfts');
   const primaryNft = useState<Nft | undefined>('primary-nft');
-  const pxNftPackages = useState<NftPackage[]>('nft-packages', () => [
-    { id: 1, size: 5, price: '0.005' },
-    { id: 2, size: 10, price: '0.01' },
-    { id: 3, size: 20, price: '0.02' },
-    { id: 4, size: 100, price: '0.1' },
-  ]);
+  const isLoading = useState('is-loading-pollination-x', () => false);
 
   const isNftIntegrationEnabled = !(runtimeConfig.public.pollinationX.url && runtimeConfig.public.pollinationX.token);
 
@@ -58,16 +56,18 @@ export function usePollinationX() {
       return;
     }
 
-    const signature = await signMessageAsync({ message: pollinationXConfig.authMessage });
+    if (!signature.value) {
+      signature.value = await signMessageAsync({ message: pollinationXConfig.authMessage });
+    }
 
     const queryParams = new URLSearchParams({
       wallet: address.value,
       chain: toHex(chainId.value),
       nonce: pollinationXConfig.authMessage,
-      signature,
+      signature: signature.value,
     });
 
-    const response = await fetch(`${pollinationXConfig.url}/auth/login?${queryParams.toString()}`, {
+    const response = await fetch(`${pollinationXConfig.url}/auth/v2/login?${queryParams.toString()}`, {
       method: 'GET',
     });
 
@@ -75,7 +75,10 @@ export function usePollinationX() {
   };
 
   const connectStorageNft = async () => {
-    pxNfts.value = await fetchUserNfts().catch((error) => toast.error(error.message));
+    isLoading.value = true;
+    pxNfts.value = await fetchUserNfts()
+      .catch((error) => toast.error(error.message))
+      .finally(() => (isLoading.value = false));
 
     if (pxNfts.value?.error) {
       toast.error(pxNfts.value.error);
@@ -89,7 +92,7 @@ export function usePollinationX() {
 
     const isFreeMint = !nftPackage;
     const nftPackageId = isFreeMint ? 0 : nftPackage.id;
-    const nftPackagePrice = isFreeMint ? 0n : parseEther(nftPackage.price);
+    const nftPackagePrice = isFreeMint ? 0n : BigInt(nftPackage.price);
 
     try {
       const txReceipt = await sendTransaction('mint', [nftPackageId], nftPackagePrice);
@@ -110,7 +113,7 @@ export function usePollinationX() {
       const txReceipt = await sendTransaction(
         'upgradeTokenPackage',
         [parseInt(selectedNftForUpgrade.id.tokenId), nftPackage.id],
-        parseEther(nftPackage.price),
+        BigInt(nftPackage.price),
       );
 
       if (txReceipt.status === 'success') {
@@ -138,12 +141,18 @@ export function usePollinationX() {
     return usePublicClient().value.waitForTransactionReceipt({ hash });
   };
 
+  onMounted(() => {
+    if (signature.value && !pxNfts.value) {
+      connectStorageNft();
+    }
+  });
+
   return {
     pollinationXClient,
     isNftIntegrationEnabled,
     pxNfts,
-    pxNftPackages,
     primaryNft,
+    isLoading,
     connectStorageNft,
     mintNft,
     setPrimaryNft,

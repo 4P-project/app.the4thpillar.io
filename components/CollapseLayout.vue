@@ -26,16 +26,14 @@ const toolbarEnabled = computed(() => {
 
 const mainClass = computed(() => {
   if (props.condensed) {
-    return 'bg-muted-100 dark:bg-muted-900 relative min-h-screen w-full overflow-x-hidden';
+    return 'bg-muted-50 dark:bg-muted-900 relative w-full';
   }
 
   if (!collapseEnabled.value) {
-    return 'bg-muted-100 dark:bg-muted-900 relative min-h-screen w-full overflow-x-hidden px-4 transition-all duration-300 xl:px-10';
+    return 'bg-muted-50 dark:bg-muted-900 relative w-full px-4 transition-all duration-300 xl:px-10';
   }
 
-  const list = [
-    'bg-muted-100 dark:bg-muted-900 relative min-h-screen w-full overflow-x-hidden px-4 transition-all duration-300 xl:px-10',
-  ];
+  const list = ['bg-muted-50 dark:bg-muted-900 relative w-full px-4 transition-all duration-300 xl:px-10'];
 
   if (isOpen.value) {
     list.push('lg:max-w-[calc(100%_-_280px)] lg:ms-[280px]');
@@ -52,7 +50,7 @@ const mainClass = computed(() => {
 </script>
 
 <template>
-  <div class="bg-muted-100 pb-20 dark:bg-muted-900">
+  <div class="h-screen overflow-y-auto bg-muted-50 pb-10 dark:bg-muted-900">
     <slot name="navigation">
       <CollapseNavigation v-if="collapseEnabled" />
       <div

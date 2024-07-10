@@ -2,6 +2,7 @@
 const navigation = [
   { title: 'Compose new mail', to: '/mail/compose', icon: 'ph:plus' },
   { title: 'Inbox', to: '/mail/inbox', icon: 'ph:tray-duotone' },
+  { title: 'Sent', to: '/mail/sent', icon: 'ph:paper-plane-tilt-duotone' },
 ];
 </script>
 

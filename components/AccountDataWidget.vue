@@ -45,7 +45,7 @@ const accountData = computed(() => {
   <BaseCard class="p-6">
     <!-- Title -->
     <div class="mb-8 flex items-center justify-between">
-      <BaseHeading as="h3" size="md" weight="semibold" lead="tight" class="text-muted-800 dark:text-white">
+      <BaseHeading as="h3" size="md" weight="normal" lead="tight" class="text-muted-800 dark:text-white">
         <span>Account</span>
       </BaseHeading>
     </div>
@@ -60,7 +60,7 @@ const accountData = computed(() => {
             <span>{{ data.title }}</span>
           </BaseHeading>
           <BaseParagraph size="xs">
-            <span class="text-muted-400">{{ data.content }}</span>
+            <p class="text-muted-400">{{ data.content }}</p>
           </BaseParagraph>
         </div>
       </div>

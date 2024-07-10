@@ -3,35 +3,28 @@ import { z } from 'zod';
 import { isAddress } from 'viem';
 import { Field, useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
-import type { Conversation } from '~/types/chat';
 
-const props = defineProps<{
+defineProps<{
   open: boolean;
-  conversation: Conversation;
 }>();
 
-const { encryptorClient, isReadyToUse: isEncryptorReadyToUse } = useEncryptor();
-const { addMembers } = useAddChatMembers();
+const { addAccounts } = useAddMailWhitelistAccounts();
 
 const emit = defineEmits(['close']);
 
 type InitialValuesType = {
-  members: string[];
+  accounts: string[];
 };
 
 const initialValues = ref<InitialValuesType>({
-  members: [''],
+  accounts: [''],
 });
 
 const zodSchema = z.object({
-  members: z
+  accounts: z
     .string()
     .min(1, { message: 'Please enter an address' })
-    .refine(isAddress, { message: 'Invalid member address' })
-    .refine((address) => (props.conversation.isEncrypted ? encryptorClient.isUserAddressInitialized(address) : true), {
-      message:
-        'Unfortunately, the member is not registered with Encryptor, and as a result, encrypted content cannot be sent to them. Please ensure the member is registered with Encryptor to enable encrypted communication.',
-    })
+    .refine(isAddress, { message: 'Invalid account address' })
     .array(),
 });
 
@@ -41,24 +34,22 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({
 });
 
 const onSubmit = handleSubmit(async (values) => {
-  await addMembers(props.conversation, values.members);
+  await addAccounts(values.accounts);
   closeModal();
   resetForm();
 });
 
-const addMember = () => {
-  initialValues.value.members.push('');
+const addAccount = () => {
+  initialValues.value.accounts.push('');
 };
 
-const removeMember = (index: number) => {
-  initialValues.value.members.splice(index, 1);
+const removeAccount = (index: number) => {
+  initialValues.value.accounts.splice(index, 1);
 };
 
 const closeModal = () => {
   emit('close');
 };
-
-const isEncryptorWidgetVisible = computed(() => !isEncryptorReadyToUse.value && props.conversation.isEncrypted);
 </script>
 
 <template>
@@ -66,27 +57,24 @@ const isEncryptorWidgetVisible = computed(() => !isEncryptorReadyToUse.value && 
     <template #header>
       <!-- Header -->
       <div class="flex w-full items-center justify-between p-4 md:p-6">
-        <h3 class="font-heading text-lg font-medium leading-6 text-muted-900 dark:text-white">Add members</h3>
+        <h3 class="font-heading text-lg font-medium leading-6 text-muted-900 dark:text-white">Add accounts</h3>
 
         <BaseButtonClose @click="closeModal" />
       </div>
     </template>
 
     <div class="p-4 pt-0 md:p-6 md:pt-0">
-      <!-- Encryptor widget -->
-      <EncryptorWidget v-if="isEncryptorWidgetVisible" color="none" />
-
       <!-- Form -->
-      <form v-show="!isEncryptorWidgetVisible" @submit.prevent="onSubmit">
+      <form @submit.prevent="onSubmit">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12 max-h-52 overflow-y-auto">
-            <div v-for="(member, index) in initialValues.members" :key="index">
-              <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" :name="`members[${index}]`">
+            <div v-for="(account, index) in initialValues.accounts" :key="index">
+              <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" :name="`accounts[${index}]`">
                 <div class="flex items-center gap-2">
                   <div class="flex-1">
                     <BaseInput
-                      label="Member"
-                      placeholder="Enter member's address"
+                      label="Account"
+                      placeholder="Enter account's address"
                       icon="lucide:user"
                       :model-value="field.value"
                       :error="errorMessage"
@@ -96,7 +84,7 @@ const isEncryptorWidgetVisible = computed(() => !isEncryptorReadyToUse.value && 
                       @blur="handleBlur"
                     />
                   </div>
-                  <BaseButtonClose shape="smooth" class="mt-6" @click.prevent="removeMember(index)" />
+                  <BaseButtonClose shape="smooth" class="mt-6" @click.prevent="removeAccount(index)" />
                 </div>
               </Field>
             </div>
@@ -107,10 +95,10 @@ const isEncryptorWidgetVisible = computed(() => !isEncryptorReadyToUse.value && 
               :loading="isSubmitting"
               type="button"
               class="h-12 items-center gap-2"
-              @click.prevent="addMember"
+              @click.prevent="addAccount"
             >
               <Icon name="lucide:plus" class="h-5 w-5" />
-              <span>Add Member</span>
+              <span>Add Account</span>
             </BaseButton>
           </div>
           <div class="col-span-12">
@@ -122,7 +110,7 @@ const isEncryptorWidgetVisible = computed(() => !isEncryptorReadyToUse.value && 
               class="h-12 w-full items-center gap-2"
             >
               <Icon name="lucide:plus" class="h-5 w-5" />
-              <span>Add members</span>
+              <span>Add Account</span>
             </BaseButtonAction>
           </div>
         </div>

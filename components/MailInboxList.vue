@@ -1,22 +1,29 @@
 <script setup lang="ts">
 import type { ReceivedEnvelope } from '@4thtech-sdk/types';
+import { vInfiniteScroll } from '@vueuse/components';
+import type { Pagination } from '~/types/pagination';
 
 const props = defineProps<{
-  isLoading: boolean;
-  receivedEnvelopes: ReceivedEnvelope[];
+  pagination: Pagination<ReceivedEnvelope>;
+  selectedEnvelope: ReceivedEnvelope | null;
+}>();
+
+const emit = defineEmits<{
+  (e: 'envelopeSelect', envelope: ReceivedEnvelope): void;
 }>();
 
 const { isNftIntegrationEnabled, primaryNft } = usePollinationX();
-const { selectedEnvelope } = useMail();
 
 const isPanelActive = useState<boolean>('is-panel-active', () => false);
 
 const search = ref('');
 
+const reversedEnvelopes = computed(() => [...props.pagination.items].reverse());
+
 const filteredEnvelopes = computed(() => {
   const searchTerm = search.value.toLowerCase();
 
-  return props.receivedEnvelopes.filter(
+  return reversedEnvelopes.value.filter(
     (envelope) =>
       envelope.sender.toLowerCase().includes(searchTerm) ||
       envelope.content.subject.toLowerCase().includes(searchTerm) ||
@@ -25,7 +32,7 @@ const filteredEnvelopes = computed(() => {
 });
 
 const selectEnvelope = (envelope: ReceivedEnvelope) => {
-  selectedEnvelope.value = envelope;
+  emit('envelopeSelect', envelope);
   isPanelActive.value = true;
 };
 
@@ -33,35 +40,50 @@ const isPollinationXWidgetVisible = computed(() => isNftIntegrationEnabled && !p
 </script>
 
 <template>
-  <div class="flex h-full w-full flex-col bg-muted-50 pt-3 dark:bg-muted-900 lg:w-full ltablet:w-full">
+  <div class="flex h-full w-full flex-col pt-3 lg:w-full ltablet:w-full">
     <!-- PollinationX widget -->
     <div v-if="isPollinationXWidgetVisible" class="my-auto">
-      <PollinationxWidget v-if="isPollinationXWidgetVisible" color="none" />
+      <PollinationxWidget color="none" />
     </div>
     <!-- Show mails if any -->
-    <div v-else-if="receivedEnvelopes.length" class="overflow-y-auto">
+    <div v-else-if="pagination.items.length" class="h-full">
       <!-- Head (search) -->
       <div class="h-16 w-full px-4 sm:px-8">
         <BaseInput
           v-model.trim="search"
           shape="curved"
           icon="lucide:search"
-          :placeholder="`Search among ${receivedEnvelopes.length} mails`"
+          :placeholder="`Search among ${pagination.items.length} mails`"
         />
       </div>
       <!-- Mails list -->
       <ul
         v-if="filteredEnvelopes.length"
-        class="nui-slimscroll h-[calc(100%_-_64px)] space-y-2 overflow-y-auto px-4 pb-8 sm:px-8"
+        v-infinite-scroll="[pagination.fetchMore, { distance: 100, canLoadMore: pagination.canLoadMore }]"
+        class="h-[calc(100%_-_64px)] space-y-2 overflow-y-auto px-4 pb-8 sm:px-8"
       >
         <li
-          v-for="(envelope, index) in filteredEnvelopes"
-          :key="index"
+          v-for="envelope in filteredEnvelopes"
+          :key="envelope.index.toString()"
           class="duration 300 cursor-pointer rounded-xl p-4 transition-colors sm:p-6"
           :class="selectedEnvelope === envelope ? 'bg-primary-500/10' : 'hover:bg-muted-100 dark:hover:bg-muted-800'"
           @click="selectEnvelope(envelope)"
         >
           <MailInboxListItem :envelope="envelope" />
+        </li>
+        <!-- Loader -->
+        <li v-if="pagination.isLoading" class="rounded-xl p-4 sm:p-6">
+          <div class="mb-3 flex items-center gap-2">
+            <BasePlaceload class="h-8 w-8 shrink-0 rounded-md" :width="32" :height="32" />
+            <div class="flex w-full flex-col">
+              <BasePlaceload class="mb-2 h-2 w-full max-w-[10rem] rounded" />
+              <BasePlaceload class="mb-2 h-2 w-full max-w-[15rem] rounded" />
+            </div>
+            <div class="w-14">
+              <BasePlaceload class="mb-2 h-2 w-full max-w-[5rem] rounded" />
+            </div>
+          </div>
+          <BasePlaceload class="mb-2 h-2 w-full max-w-[15rem] rounded" />
         </li>
       </ul>
       <!-- Show placeholder if there is no mail results from search -->
@@ -85,7 +107,7 @@ const isPollinationXWidgetVisible = computed(() => isNftIntegrationEnabled && !p
       </BasePlaceholderPage>
     </div>
     <!-- Show placeholder if there is no email -->
-    <div v-else-if="!isLoading" class="my-auto">
+    <div v-else-if="!pagination.isLoading" class="my-auto">
       <BasePlaceholderPage
         title="Your Inbox is Empty"
         subtitle="Your inbox is empty right now. Compose a new mail or wait for incoming mails to appear here."

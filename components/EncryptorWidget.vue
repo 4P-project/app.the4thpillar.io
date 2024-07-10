@@ -79,7 +79,7 @@ const registerExtension = () => {
         </div>
       </div>
       <div class="text-center">
-        <BaseHeading as="h3" size="md" weight="medium" lead="tight" class="mb-1 text-muted-800 dark:text-white">
+        <BaseHeading as="h3" size="md" weight="normal" lead="tight" class="mb-1 text-muted-800 dark:text-white">
           <span>{{ encryptorWidget.title }}</span>
         </BaseHeading>
         <BaseParagraph size="xs">

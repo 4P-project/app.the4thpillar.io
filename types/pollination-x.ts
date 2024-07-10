@@ -68,8 +68,16 @@ export type Nft = {
   synced?: boolean;
 };
 
+export type NftPackage = {
+  id: number;
+  size: number;
+  price: bigint;
+  storageUnit: string;
+};
+
 export type GetNft = {
   nfts?: Nft[];
+  packages: NftPackage[];
   success?: boolean;
   error?: any;
   totalCount?: number;
@@ -80,10 +88,4 @@ export type GetNft = {
 export type PollinationXConfig = {
   url: string;
   authMessage: string;
-};
-
-export type NftPackage = {
-  id: number;
-  size: number;
-  price: string;
 };

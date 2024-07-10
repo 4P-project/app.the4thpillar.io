@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
   extends: ['@shuriken-ui/nuxt'],
-  modules: ['@use-wagmi/nuxt', '@nuxt/image'],
+  modules: ['@use-wagmi/nuxt', '@nuxt/image', '@pinia/nuxt'],
   css: [
     '@fontsource-variable/space-grotesk/index.css',
     '@fontsource-variable/karla/index.css',
@@ -15,6 +15,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       walletConnectId: process.env.WALLET_CONNECT_ID,
+      mailAppId: process.env.MAIL_APP_ID,
+      chatAppId: process.env.CHAT_APP_ID,
       pollinationX: {
         url: process.env.POLLINATIONX_URL,
         token: process.env.POLLINATIONX_TOKEN,

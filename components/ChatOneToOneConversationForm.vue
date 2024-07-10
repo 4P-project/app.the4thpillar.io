@@ -4,7 +4,7 @@ import { Field, useForm } from 'vee-validate';
 import { z } from 'zod';
 import { isAddress } from 'viem';
 
-const { createOneToOneConversation } = useChat();
+const { createOneToOneConversation } = useCreateOneToOneConversation();
 const { encryptorClient, isReadyToUse: isEncryptorReadyToUse } = useEncryptor();
 
 const emit = defineEmits(['close']);
