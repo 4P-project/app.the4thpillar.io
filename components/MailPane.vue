@@ -8,9 +8,11 @@ const props = defineProps<{
   pagination: Pagination<ReceivedEnvelope>;
   selectedEnvelope: ReceivedEnvelope | null;
   envelopeSelect: (envelope: ReceivedEnvelope) => void;
+  isProFeature?: boolean;
 }>();
 
 const { md } = useTailwindBreakpoints();
+const { isPro } = useProVersion();
 
 const split = ref();
 const paneSize = ref(35);
@@ -37,7 +39,10 @@ watch(
     <MailSidebar />
 
     <!-- Content -->
-    <ClientOnly>
+    <div v-if="isProFeature && !isPro">
+      <ProWidget class="m-6 max-w-md" />
+    </div>
+    <ClientOnly v-else>
       <Splitpanes ref="split" @resize="paneSize = $event[0].size">
         <Pane :size="hasMails ? paneSize : 100" :min-size="md ? 30 : 100" :max-size="md ? 50 : 100">
           <MailInboxList

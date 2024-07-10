@@ -75,6 +75,7 @@ function onDropClick() {
           <span class="whitespace-nowrap font-sans text-[0.85rem]" :class="[!props.expanded ? 'hidden' : 'block']">
             {{ child.name }}
           </span>
+          <Icon v-if="child.isPro" name="ph:crown" class="ms-auto h-4 w-4 text-amber-500" />
         </NuxtLink>
       </li>
     </ul>

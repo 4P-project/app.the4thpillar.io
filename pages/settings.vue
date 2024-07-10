@@ -9,10 +9,13 @@ const tabs = [
     path: '/settings',
   },
 ];
+
+const { isPro } = useProVersion();
 </script>
 
 <template>
-  <div>
+  <ProWidget v-if="!isPro" class="max-w-md" />
+  <div v-else>
     <!--Tabs-->
     <div class="flex items-center justify-between overflow-hidden">
       <div class="flex grow gap-x-6 border-b border-muted-200 font-sans dark:border-muted-800 xs:overflow-x-auto">

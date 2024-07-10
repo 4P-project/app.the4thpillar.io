@@ -7,6 +7,7 @@ export interface CollapseResolvedConfig {
     name: string;
     class?: string;
   };
+  isPro?: boolean;
   children?: any[];
   component?: {
     name: string;

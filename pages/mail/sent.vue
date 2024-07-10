@@ -12,5 +12,6 @@ const mailStore = useMailStore();
     :pagination="mailStore.sentEnvelopes"
     :selected-envelope="mailStore.selectedSentEnvelope"
     :envelope-select="(envelope) => (mailStore.selectedSentEnvelope = envelope)"
+    :is-pro-feature="true"
   />
 </template>
