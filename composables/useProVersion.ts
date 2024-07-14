@@ -3,7 +3,14 @@ import { parseEther } from 'viem';
 
 // Define token addresses for specific chain IDs
 const tokenAddresses: { [chainId: number]: Address } = {
+  250: '0x9688d9e0041cc825c2f353deee6a7e20ebb80f74', // Fantom
   4_002: '0x901764bae9D1552d1794529Dce1CFaBC86FA7268', // Fantom Testnet
+};
+
+const upgradeNowLinks: { [chainId: number]: string } = {
+  250: 'https://spooky.fi/#/best-swap?inputCurrency=ETH&outputCurrency=0x9688d9e0041cc825c2f353deee6a7e20ebb80f74&exactField=output&exactAmount=10000+&chain=fantom',
+  4_002:
+    'https://spooky.fi/#/best-swap?inputCurrency=ETH&outputCurrency=0x9688d9e0041cc825c2f353deee6a7e20ebb80f74&exactField=output&exactAmount=10000+&chain=fantom',
 };
 
 export function useProVersion() {
@@ -11,12 +18,14 @@ export function useProVersion() {
   const chainId = useChainId();
 
   const tokenAddress = tokenAddresses[chainId.value];
+  const upgradeNowLink = upgradeNowLinks[chainId.value];
   const minRequiredTokenBalance = 10_000;
 
   if (!tokenAddress) {
     return {
       isPro: computed(() => false),
       token: null,
+      upgradeNowLink: null,
       minRequiredTokenBalance,
     };
   }
@@ -32,6 +41,7 @@ export function useProVersion() {
   return {
     isPro,
     token,
+    upgradeNowLink,
     minRequiredTokenBalance,
   };
 }

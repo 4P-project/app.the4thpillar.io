@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { isPro } = useProVersion();
+const { isPro, upgradeNowLink } = useProVersion();
 
 const title = computed(() => (isPro.value ? 'Pro Membership Active' : 'Upgrade to Pro'));
 
@@ -31,6 +31,8 @@ const description = computed(() =>
       </BaseParagraph>
     </div>
     <!-- Action -->
-    <BaseButton v-if="!isPro" color="primary" class="w-full">Upgrade Now</BaseButton>
+    <BaseButton v-if="!isPro && upgradeNowLink" :href="upgradeNowLink" target="_blank" color="primary" class="w-full">
+      Upgrade Now
+    </BaseButton>
   </BaseCard>
 </template>
