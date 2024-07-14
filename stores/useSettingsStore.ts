@@ -7,5 +7,5 @@ export const useSettingsStore = defineStore('settings', () => {
 });
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useMailStore, import.meta.hot));
+  import.meta.hot.accept(acceptHMRUpdate(useSettingsStore, import.meta.hot));
 }

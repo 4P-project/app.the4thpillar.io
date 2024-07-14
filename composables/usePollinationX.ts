@@ -88,6 +88,7 @@ export function usePollinationX() {
   };
 
   const mintNft = async (nftPackage?: NftPackage) => {
+    isLoading.value = true;
     toast.info('Minting in progress');
 
     const isFreeMint = !nftPackage;
@@ -103,10 +104,13 @@ export function usePollinationX() {
       }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    } finally {
+      isLoading.value = false;
     }
   };
 
   const upgradeNft = async (selectedNftForUpgrade: Nft, nftPackage: NftPackage) => {
+    isLoading.value = true;
     toast.info('Upgrading PX sNFT in progress');
 
     try {
@@ -122,6 +126,8 @@ export function usePollinationX() {
       }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    } finally {
+      isLoading.value = false;
     }
   };
 

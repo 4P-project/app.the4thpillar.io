@@ -94,10 +94,12 @@ const pollinationXWidget = computed(() => {
   return {
     title: 'PollinationX Storage On-Demand',
     text: 'Connected',
-    button: {
-      text: 'Buy new PX sNFT',
-      click: () => openNftPackagesModal(),
-    },
+    ...(pxNfts.value.packages.length && {
+      button: {
+        text: 'Buy new PX sNFT',
+        click: () => openNftPackagesModal(),
+      },
+    }),
   };
 });
 
@@ -142,26 +144,28 @@ const pollinationXModalInfo = computed(() => ({
         </BaseButton>
       </div>
       <div v-if="pxNfts?.nfts?.length" class="mt-4 text-center">
-        <BaseParagraph size="xs">
+        <BaseParagraph v-if="!primaryNft || pxNfts.packages.length > 1" size="xs">
           <span class="text-muted-400">Click to select default PX sNFT ↓</span>
         </BaseParagraph>
         <ul class="mt-2">
           <li
             v-for="(nft, index) in pxNfts.nfts"
             :key="index"
+            class="mb-1 rounded hover:bg-muted-100/80 dark:hover:bg-muted-700/60"
             :class="{ 'bg-muted-100/80 dark:bg-muted-700/60': nft === primaryNft }"
             @click="setPrimaryNft(nft)"
           >
-            <div class="flex cursor-pointer p-2 hover:bg-muted-100/80 dark:hover:bg-muted-700/60">
+            <div class="flex cursor-pointer p-2">
               <img src="/img/logos/pollination-x-icon.svg" :alt="pollinationXWidget.title" class="mr-2 h-5 w-5" />
               <Icon
+                v-if="pxNfts.packages.length"
                 name="ph:note-pencil"
                 class="mr-2 h-5 w-5 text-muted-500 hover:text-muted-600 dark:text-muted-400/80 dark:hover:text-muted-200"
                 @click="openNftPackagesModal(nft)"
               />
               <BaseParagraph size="xs">
-                {{ nft.title }} (Size: {{ nft.metadata.attributes[1].value }}, Usage
-                {{ nft.metadata.attributes[0].value }}%)
+                {{ nft.title }} (Size: {{ nft.metadata.attributes[1].value }}, Bandwidth:
+                {{ nft.metadata.attributes[2].value }}, Usage {{ nft.metadata.attributes[0].value }}%)
               </BaseParagraph>
               <Icon
                 v-if="nft === primaryNft"
@@ -187,6 +191,7 @@ const pollinationXModalInfo = computed(() => ({
         {{
           `${selectedNftForUpgrade.title}
           (Size: ${selectedNftForUpgrade.metadata.attributes[1].value},
+          Bandwidth: ${selectedNftForUpgrade.metadata.attributes[2].value},
           Usage ${selectedNftForUpgrade.metadata.attributes[0].value}%)`
         }}
       </span>
@@ -212,6 +217,7 @@ const pollinationXModalInfo = computed(() => ({
           <div>
             <span class="block text-sm">Size: {{ nftPackage.size }} {{ nftPackage.storageUnit }}</span>
             <span class="block text-sm">Price: {{ formatEther(nftPackage.price) }} {{ pxNfts?.symbol }}</span>
+            <span class="block text-sm">Bandwidth: {{ nftPackage?.bandwidthLimit }}</span>
           </div>
         </div>
       </div>

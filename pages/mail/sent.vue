@@ -4,7 +4,7 @@ definePageMeta({
   layout: 'empty',
 });
 
-const mailStore = useMailStore();
+const mailStore = useSentMailStore();
 </script>
 
 <template>

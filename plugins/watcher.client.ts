@@ -12,7 +12,7 @@ export default defineNuxtPlugin(() => {
   initializePollinationXClient();
 
   watch(
-    [chain, address],
+    [() => chain?.value?.id, () => address?.value],
     () => {
       initializeEncryptor();
       initializeMailClient();
@@ -22,9 +22,12 @@ export default defineNuxtPlugin(() => {
     { immediate: true },
   );
 
-  watch([primaryNft], () => {
-    initializeMailClient();
-  });
+  watch(
+    () => primaryNft.value?.id.tokenId,
+    () => {
+      initializeMailClient();
+    },
+  );
 
   watchAccount((account) => {
     const isAtHomePage = route.name === 'index';

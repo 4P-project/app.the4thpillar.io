@@ -1,5 +1,6 @@
 import { UseWagmiPlugin, configureChains, createConfig } from 'use-wagmi';
 import {
+  fantom,
   fantomTestnet,
   immu3Testnet,
 } from '@4thtech-sdk/ethereum';
@@ -14,6 +15,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const { chains, publicClient, webSocketPublicClient } = configureChains(
     [
       immu3Testnet,
+      fantom,
       fantomTestnet,
     ],
     [publicProvider()],

@@ -70,6 +70,7 @@ export type Nft = {
 
 export type NftPackage = {
   id: number;
+  bandwidthLimit: number;
   size: number;
   price: bigint;
   storageUnit: string;

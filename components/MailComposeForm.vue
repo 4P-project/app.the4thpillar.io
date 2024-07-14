@@ -17,7 +17,8 @@ const emits = defineEmits<{
 const { encryptorClient, isReadyToUse: isEncryptorReadyToUse } = useEncryptor();
 const { isNftIntegrationEnabled, primaryNft } = usePollinationX();
 const { mailClient } = useMailClient();
-const { selectedReceivedEnvelope, selectedSentEnvelope } = useMailStore();
+const { selectedReceivedEnvelope } = useReceivedMailStore();
+const { selectedSentEnvelope } = useSentMailStore();
 const route = useRoute();
 const toast = useToast();
 

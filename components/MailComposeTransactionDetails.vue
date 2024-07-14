@@ -100,7 +100,7 @@ const toSentence = (text: string) => {
         >
           <div>
             <BaseHeading as="h6" size="sm" weight="medium" class="text-muted-800 dark:text-muted-100">
-              <span>{{ toSentence(name) }}</span>
+              <span>{{ toSentence(name) }}{{ name === 'to' ? ' (smart contract)' : '' }}</span>
             </BaseHeading>
             <BaseParagraph size="xs">
               <span class="text-muted-400">{{ value }}</span>

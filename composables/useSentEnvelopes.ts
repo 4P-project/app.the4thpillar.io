@@ -15,7 +15,7 @@ export function useSentEnvelopes() {
   };
 
   const fetchTotalCount = (): Promise<bigint> => {
-    return 1n;
+    return Promise.resolve(1n);
   };
 
   const pagination = usePaginatedFetch<ReceivedEnvelope>(fetchPaginated, fetchTotalCount, PAGE_SIZE, ORDER);

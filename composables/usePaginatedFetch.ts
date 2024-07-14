@@ -55,7 +55,10 @@ export function usePaginatedFetch<T>(
 
       const newItems = await fetchPaginated(fetchIndex, fetchCount);
 
-      items.value = order === 'asc' ? [...items.value, ...newItems] : [...newItems, ...items.value];
+      items.value =
+        order === 'asc'
+          ? ([...items.value, ...newItems] as typeof items.value)
+          : ([...newItems, ...items.value] as typeof items.value);
       currentStartIndex.value = order === 'asc' ? currentStartIndex.value + fetchCount : fetchIndex;
     } catch (error) {
       console.error('Failed to fetch more items:', error);
