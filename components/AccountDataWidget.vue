@@ -2,6 +2,7 @@
 const { address } = useAccount();
 const { chain } = useWagmiNetwork();
 
+const { isPro, token, minRequiredTokenBalance } = useProVersion();
 const { data: balance } = useBalance({
   address,
   watch: true,
@@ -37,6 +38,16 @@ const accountData = computed(() => {
     });
   }
 
+  if (token?.value) {
+    const minBalanceInfo = isPro.value ? '' : ' / ' + minRequiredTokenBalance;
+    data.push({
+      title: 'Token balance',
+      icon: 'ph:crown-duotone',
+      color: 'bg-amber-500/20 text-amber-500',
+      content: `${token.value.formatted}${minBalanceInfo} ${token.value.symbol}`,
+    });
+  }
+
   return data;
 });
 </script>
@@ -45,7 +56,7 @@ const accountData = computed(() => {
   <BaseCard class="p-6">
     <!-- Title -->
     <div class="mb-8 flex items-center justify-between">
-      <BaseHeading as="h3" size="md" weight="semibold" lead="tight" class="text-muted-800 dark:text-white">
+      <BaseHeading as="h3" size="md" weight="normal" lead="tight" class="text-muted-800 dark:text-white">
         <span>Account</span>
       </BaseHeading>
     </div>
@@ -60,7 +71,7 @@ const accountData = computed(() => {
             <span>{{ data.title }}</span>
           </BaseHeading>
           <BaseParagraph size="xs">
-            <span class="text-muted-400">{{ data.content }}</span>
+            <p class="text-muted-400">{{ data.content }}</p>
           </BaseParagraph>
         </div>
       </div>

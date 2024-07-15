@@ -61,6 +61,7 @@ const closeModal = () => {
             "
           ></div>
           <label class="ms-4 text-sm font-medium">Group</label>
+          <Icon name="ph:crown" class="ms-auto h-5 w-5 text-amber-500" />
         </div>
         <ChatGroupConversationForm v-show="conversationOption === ConversationType.Group" @close="closeModal" />
       </div>

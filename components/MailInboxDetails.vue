@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import type { ReceivedEnvelope } from '@4thtech-sdk/types';
 import { saveAs } from 'file-saver';
 import { useToast } from 'vue-toastification';
 
-const { mailClient, selectedEnvelope } = useMail();
+const props = defineProps<{
+  envelope: ReceivedEnvelope | null;
+}>();
+
+const { mailClient } = useMailClient();
+const route = useRoute();
 const toast = useToast();
 
 const isPanelActive = useState<boolean>('is-panel-active');
@@ -15,25 +21,31 @@ const onReplyClick = () => {
     replyContent.value = replyMessage.value;
   }
 
-  navigateTo('/mail/compose?reply=true');
+  navigateTo({
+    path: '/mail/compose',
+    query: { action: 'reply', from: route.name?.toString() },
+  });
 };
 
 const onForwardClick = () => {
-  navigateTo('/mail/compose?forward=true');
+  navigateTo({
+    path: '/mail/compose',
+    query: { action: 'forward', from: route.name?.toString() },
+  });
 };
 
 const onArchiveClick = () => {
-  if (!selectedEnvelope.value) {
+  if (!props.envelope) {
     return;
   }
 
   const jsonString = JSON.stringify(
-    selectedEnvelope.value,
+    props.envelope,
     (_key, value) => (typeof value === 'bigint' ? value.toString() : value),
     2,
   );
   const fileData = new Blob([jsonString], { type: 'application/json' });
-  const fileName = `${selectedEnvelope.value.sender}-${selectedEnvelope.value.index}`;
+  const fileName = `${props.envelope.sender}-${props.envelope.index}`;
 
   saveAs(fileData, fileName);
 };
@@ -42,18 +54,18 @@ const onArchiveClick = () => {
 // };
 
 const onDeleteClick = () => {
-  if (!selectedEnvelope.value) {
+  if (!props.envelope) {
     return;
   }
 
-  mailClient.value.deleteMail(selectedEnvelope.value.index).catch((error) => toast.error(error.message));
-  // selectedEnvelope.value = undefined;
+  mailClient.value.deleteMail(props.envelope.index).catch((error) => toast.error(error.message));
+  // envelope.value = undefined;
   isPanelActive.value = false;
 };
 
 const mailActionIcons = [
   { iconName: 'ph:arrow-arc-left-duotone', tooltip: 'Reply', onClick: onReplyClick },
-  { iconName: 'ph:arrow-arc-right-duotone', tooltip: 'Reply', onClick: onForwardClick },
+  { iconName: 'ph:arrow-arc-right-duotone', tooltip: 'Forward', onClick: onForwardClick },
   { iconName: 'ph:archive-box-duotone', tooltip: 'Archive', onClick: onArchiveClick },
   // { iconName: 'ph:info-duotone', tooltip: 'Info', onClick: onInfoClick },
   { iconName: 'ph:trash-duotone', tooltip: 'Delete', onClick: onDeleteClick },
@@ -65,7 +77,7 @@ const mailActionIcons = [
     class="fixed end-0 top-0 flex h-full flex-col border-l border-muted-200 bg-white transition-transform duration-300 dark:border-muted-700/40 dark:bg-muted-800 lg:static lg:grow ltablet:static ltablet:grow"
     :class="isPanelActive ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 ltablet:translate-x-0'"
   >
-    <div v-if="selectedEnvelope" class="mx-auto w-full lg:max-w-5xl ltablet:max-w-5xl">
+    <div v-if="envelope" class="mx-auto w-full lg:max-w-5xl ltablet:max-w-5xl">
       <!-- Toolbar -->
       <div class="relative z-10 flex h-16 w-full items-center justify-between px-8">
         <div class="flex items-center gap-2 text-muted-700 dark:text-muted-300">
@@ -89,18 +101,16 @@ const mailActionIcons = [
       >
         <div class="flex items-center gap-x-4">
           <div class="hidden lg:block ltablet:block">
-            <UserAvatar :address="selectedEnvelope.sender" size="lg" />
+            <UserAvatar :address="envelope.sender" size="lg" />
           </div>
           <div class="block lg:hidden ltablet:hidden">
-            <UserAvatar :address="selectedEnvelope.sender" size="sm" />
+            <UserAvatar :address="envelope.sender" size="sm" />
           </div>
           <div class="flex flex-col font-sans">
             <h3 class="text-lg font-semibold">
-              {{ selectedEnvelope.sender }}
+              {{ envelope.sender }}
             </h3>
-            <p class="text-sm text-muted-400">
-              {{ selectedEnvelope.sender }}
-            </p>
+            <p class="text-sm text-muted-400">To: {{ envelope.receiver }}</p>
           </div>
         </div>
         <div>
@@ -123,19 +133,17 @@ const mailActionIcons = [
       <!-- Mail body -->
       <div class="nui-slimscroll h-[calc(100vh_-_344px)] overflow-y-auto p-8 pt-4">
         <div class="text-right text-sm text-muted-400">
-          <time :datetime="selectedEnvelope.sentAt.toDateString()">{{
-            useFormattedDate(selectedEnvelope.sentAt)
-          }}</time>
+          <time :datetime="envelope.sentAt.toDateString()">{{ useFormattedDate(envelope.sentAt) }}</time>
         </div>
-        <h1 class="text-2xl font-bold">{{ selectedEnvelope.content.subject }}</h1>
+        <h1 class="text-2xl font-bold">{{ envelope.content.subject }}</h1>
         <article class="mt-8 leading-7 tracking-wider text-muted-500 dark:text-muted-400">
           <p class="whitespace-pre-wrap font-sans">
-            {{ selectedEnvelope.content.body }}
+            {{ envelope.content.body }}
           </p>
         </article>
         <!-- Mail attachments -->
-        <div v-if="selectedEnvelope.content.attachments" class="mt-24 grid grid-cols-1 gap-4 sm:grid-cols-4">
-          <AttachmentsList :attachments="selectedEnvelope.content.attachments" />
+        <div v-if="envelope.content.attachments" class="mt-24 grid grid-cols-1 gap-4 sm:grid-cols-4">
+          <AttachmentsList :attachments="envelope.content.attachments" />
         </div>
       </div>
       <!-- Mail reply -->

@@ -16,7 +16,9 @@ const emits = defineEmits<{
 
 const { encryptorClient, isReadyToUse: isEncryptorReadyToUse } = useEncryptor();
 const { isNftIntegrationEnabled, primaryNft } = usePollinationX();
-const { mailClient, selectedEnvelope } = useMail();
+const { mailClient } = useMailClient();
+const { selectedReceivedEnvelope } = useReceivedMailStore();
+const { selectedSentEnvelope } = useSentMailStore();
 const route = useRoute();
 const toast = useToast();
 
@@ -119,10 +121,17 @@ const isEncryptorWidgetVisible = computed(() => canUseEncryption.value && !isEnc
 const isPollinationXWidgetVisible = computed(() => isNftIntegrationEnabled && !primaryNft.value);
 
 onMounted(() => {
-  const queryType = route.query.reply ? 'reply' : route.query.forward ? 'forward' : undefined;
+  const { action, from } = route.query;
 
-  if (selectedEnvelope.value && queryType) {
-    initialValues.value = prepareContent(queryType, selectedEnvelope.value);
+  if (!action || !from) return;
+  if (!['reply', 'forward'].includes(action.toString())) return;
+  if (!['mail-inbox', 'mail-sent'].includes(from.toString())) return;
+
+  const actionValue = action.toString() === 'reply' ? 'reply' : 'forward';
+  const envelope = from === 'mail-inbox' ? selectedReceivedEnvelope : selectedSentEnvelope;
+
+  if (envelope) {
+    initialValues.value = prepareContent(actionValue, envelope);
   }
 });
 

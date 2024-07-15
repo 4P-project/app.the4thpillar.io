@@ -54,6 +54,7 @@ const endMenuItems = computed(() => menuItems.value?.filter((sidebar) => sidebar
             <span class="whitespace-nowrap font-sans text-sm" :class="!isOpen ? 'hidden' : 'block'">
               {{ item.name }}
             </span>
+            <Icon v-if="item.isPro" name="ph:crown" class="ms-auto h-4 w-4 text-amber-500" />
           </NuxtLink>
           <div v-else-if="item.divider" class="my-3 h-px w-full border-t border-muted-200 dark:border-muted-700"></div>
           <button

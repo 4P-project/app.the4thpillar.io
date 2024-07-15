@@ -4,7 +4,8 @@ import { Field, useForm } from 'vee-validate';
 import { z } from 'zod';
 import { isAddress } from 'viem';
 
-const { createGroupConversation } = useChat();
+const { isPro } = useProVersion();
+const { createGroupConversation } = useCreateGroupConversation();
 const { encryptorClient, isReadyToUse: isEncryptorReadyToUse } = useEncryptor();
 
 const emit = defineEmits(['close']);
@@ -65,7 +66,8 @@ const isEncryptorWidgetVisible = computed(() => !isEncryptorReadyToUse.value && 
 </script>
 
 <template>
-  <div class="grid grid-cols-1 gap-4 p-8 pt-4">
+  <ProWidget v-if="!isPro" class="mt-6" />
+  <div v-else class="grid grid-cols-1 gap-4 p-8 pt-4">
     <div class="ms-auto">
       <Field v-slot="{ handleChange, handleBlur }" name="isEncrypted">
         <BaseSwitchBall

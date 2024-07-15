@@ -1,4 +1,5 @@
-import type { Address, Conversation, ReceivedMessage, TransactionHash } from '@4thtech-sdk/types';
+import type { Address, Conversation as ConversationSdk, ReceivedMessage, TransactionHash } from '@4thtech-sdk/types';
+import type { Pagination } from '~/types/pagination';
 
 export type TmpMessageIndex = `tmp-${number}`;
 
@@ -10,8 +11,9 @@ export type TmpSentMessage = {
   transactionHash: TransactionHash;
 };
 
-export type ConversationWithMessages = Conversation & {
-  messages: Map<bigint | TmpMessageIndex, ReceivedMessage | TmpSentMessage>;
+export type Conversation = ConversationSdk & {
+  members: Pagination<Address>;
+  messages: Pagination<ReceivedMessage | TmpSentMessage>;
 };
 
 export type GroupConversationConfig = {

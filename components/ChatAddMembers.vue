@@ -3,11 +3,15 @@ import { z } from 'zod';
 import { isAddress } from 'viem';
 import { Field, useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
+import type { Conversation } from '~/types/chat';
 
-defineProps<{ open: boolean }>();
+const props = defineProps<{
+  open: boolean;
+  conversation: Conversation;
+}>();
 
-const { selectedConversation: conversation, addMembers } = useChat();
 const { encryptorClient, isReadyToUse: isEncryptorReadyToUse } = useEncryptor();
+const { addMembers } = useAddChatMembers();
 
 const emit = defineEmits(['close']);
 
@@ -24,7 +28,7 @@ const zodSchema = z.object({
     .string()
     .min(1, { message: 'Please enter an address' })
     .refine(isAddress, { message: 'Invalid member address' })
-    .refine((address) => (conversation.value?.isEncrypted ? encryptorClient.isUserAddressInitialized(address) : true), {
+    .refine((address) => (props.conversation.isEncrypted ? encryptorClient.isUserAddressInitialized(address) : true), {
       message:
         'Unfortunately, the member is not registered with Encryptor, and as a result, encrypted content cannot be sent to them. Please ensure the member is registered with Encryptor to enable encrypted communication.',
     })
@@ -37,7 +41,7 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({
 });
 
 const onSubmit = handleSubmit(async (values) => {
-  await addMembers(values.members);
+  await addMembers(props.conversation, values.members);
   closeModal();
   resetForm();
 });
@@ -54,7 +58,7 @@ const closeModal = () => {
   emit('close');
 };
 
-const isEncryptorWidgetVisible = computed(() => !isEncryptorReadyToUse.value && conversation.value.isEncrypted);
+const isEncryptorWidgetVisible = computed(() => !isEncryptorReadyToUse.value && props.conversation.isEncrypted);
 </script>
 
 <template>
