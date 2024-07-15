@@ -1,13 +1,17 @@
 <script setup lang="ts">
-const { isPro, upgradeNowLink } = useProVersion();
+const { isProEnabled, isPro, upgradeNowLink } = useProVersion();
 
 const title = computed(() => (isPro.value ? 'Pro Membership Active' : 'Upgrade to Pro'));
 
-const description = computed(() =>
-  isPro.value
+const description = computed(() => {
+  if (!isProEnabled.value) {
+    return 'Pro version is not available on this network.';
+  }
+
+  return isPro.value
     ? 'You are enjoying the full benefits of our Pro membership! Thank you for your support. Explore all the advanced features and make the most out of your experience.'
-    : 'Unlock advanced features and enhance your experience by upgrading to the Pro version. Fund your account with just FOUR tokens to enjoy all the benefits of a Pro membership.',
-);
+    : 'Unlock advanced features and enhance your experience by upgrading to the Pro version. Fund your account with just FOUR tokens to enjoy all the benefits of a Pro membership.';
+});
 </script>
 
 <template>

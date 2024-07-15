@@ -17,12 +17,15 @@ export function useProVersion() {
   const { address } = useAccount();
   const chainId = useChainId();
 
-  const tokenAddress = tokenAddresses[chainId.value];
-  const upgradeNowLink = upgradeNowLinks[chainId.value];
   const minRequiredTokenBalance = 10_000;
+
+  const tokenAddress = computed(() => tokenAddresses[chainId.value]);
+  const isProEnabled = computed(() => !!tokenAddress.value);
+  const upgradeNowLink = computed(() => upgradeNowLinks[chainId.value]);
 
   if (!tokenAddress) {
     return {
+      isProEnabled,
       isPro: computed(() => false),
       token: null,
       upgradeNowLink: null,
@@ -39,6 +42,7 @@ export function useProVersion() {
   const isPro = computed(() => token.value && token.value.value >= parseEther(minRequiredTokenBalance.toString()));
 
   return {
+    isProEnabled,
     isPro,
     token,
     upgradeNowLink,
