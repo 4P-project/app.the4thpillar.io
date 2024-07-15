@@ -338,5 +338,23 @@
     "stateMutability": "payable",
     "type": "function"
   },
-  { "inputs": [], "name": "withdraw", "outputs": [], "stateMutability": "payable", "type": "function" }
+  { "inputs": [], "name": "withdraw", "outputs": [], "stateMutability": "payable", "type": "function" },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bandwidthPackageId",
+        "type": "uint256"
+      }
+    ],
+    "name": "buyMoreBandwidth",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  }
 ]

@@ -4,7 +4,7 @@ import { useStorage } from '@vueuse/core';
 import { useToast } from 'vue-toastification';
 import { PollinationX } from '@4thtech-sdk/storage';
 import pollinationXAbi from '~/assets/abi/pollination-x.json';
-import type { GetNft, Nft, NftPackage, PollinationXConfig } from '~/types/pollination-x';
+import type { BandwidthPackage, GetNft, Nft, NftPackage, PollinationXConfig } from '~/types/pollination-x';
 
 export function usePollinationX() {
   const { address } = useAccount();
@@ -131,6 +131,28 @@ export function usePollinationX() {
     }
   };
 
+  const upgradeBandwidth = async (selectedNftForUpgrade: Nft, pkg: BandwidthPackage) => {
+    isLoading.value = true;
+    toast.info('Upgrading PX bandwidth in progress');
+
+    try {
+      const txReceipt = await sendTransaction(
+        'buyMoreBandwidth',
+        [parseInt(selectedNftForUpgrade.id.tokenId), pkg.id],
+        BigInt(pkg.price),
+      );
+
+      if (txReceipt.status === 'success') {
+        toast.success('Bought more bandwidth');
+        await connectStorageNft();
+      }
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
   const sendTransaction = async (functionName: string, args: any[], value: bigint = 0n) => {
     const encodedData = encodeFunctionData({
       abi: pollinationXAbi,
@@ -163,6 +185,7 @@ export function usePollinationX() {
     mintNft,
     setPrimaryNft,
     upgradeNft,
+    upgradeBandwidth,
     disconnectPollinationX,
     initializePollinationXClient,
   };
