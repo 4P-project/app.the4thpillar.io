@@ -2,6 +2,7 @@
 const props = defineProps<{
   modelValue: { name: string; content: File }[];
   uploadProgress: Record<string, number>;
+  maxFileSize?: number;
 }>();
 
 const emits = defineEmits<{
@@ -20,9 +21,9 @@ watch(uploadedFiles, () => {
   [...(uploadedFiles.value || [])].forEach((file: File) => {
     // Add new attachments - without duplicates
     if (!attachments.value.some((attachment) => attachment.name === file.name)) {
-      // Don't upload files bigger than 20 MB
-      if (file.size > 20 * 1024 * 1024) {
-        alert('Max file size is 20 MB');
+      // Don't upload files bigger than allowed max file size
+      if (props.maxFileSize && file.size > props.maxFileSize) {
+        alert(`File size exceeds the maximum limit of ${formatFileSize(props.maxFileSize)}.`);
         return;
       }
 

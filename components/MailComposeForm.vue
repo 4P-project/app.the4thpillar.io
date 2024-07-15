@@ -19,6 +19,7 @@ const { isNftIntegrationEnabled, primaryNft } = usePollinationX();
 const { mailClient } = useMailClient();
 const { selectedReceivedEnvelope } = useReceivedMailStore();
 const { selectedSentEnvelope } = useSentMailStore();
+const { isPro } = useProVersion();
 const route = useRoute();
 const toast = useToast();
 
@@ -119,6 +120,13 @@ const prepareContent = (action: 'reply' | 'forward', envelope: ReceivedEnvelope)
 
 const isEncryptorWidgetVisible = computed(() => canUseEncryption.value && !isEncryptorReadyToUse.value);
 const isPollinationXWidgetVisible = computed(() => isNftIntegrationEnabled && !primaryNft.value);
+const maxFileSize = computed(() => {
+  if (isPro.value) {
+    return undefined;
+  }
+
+  return 20 * 1024 * 1024;
+});
 
 onMounted(() => {
   const { action, from } = route.query;
@@ -243,6 +251,7 @@ onBeforeRouteLeave(() => {
                   v-model="attachments"
                   :disabled="isSubmitting"
                   :upload-progress="attachmentsUploadProgress"
+                  :max-file-size="maxFileSize"
                 />
               </div>
             </div>
