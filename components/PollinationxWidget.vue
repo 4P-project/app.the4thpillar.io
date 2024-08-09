@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatEther } from 'viem';
-import type { Nft, NftPackage } from '~/types/pollination-x';
+import type { BandwidthPackage, Nft, NftPackage, Package } from '~/types/pollination-x';
 
 defineProps<{
   color?:
@@ -16,7 +16,8 @@ defineProps<{
     | 'none';
 }>();
 
-const { pxNfts, primaryNft, isLoading, connectStorageNft, mintNft, setPrimaryNft, upgradeNft } = usePollinationX();
+const { pxNfts, primaryNft, isLoading, connectStorageNft, mintNft, setPrimaryNft, upgradeNft, upgradeBandwidth } =
+  usePollinationX();
 
 const nftPackagesModalOpen = ref(false);
 const selectedNftForUpgrade = ref<Nft>();
@@ -44,6 +45,19 @@ const handleNftPackageClick = (nftPackage: NftPackage) => {
 
   action.then(() => {
     processingNftPackageIds.value.delete(nftPackage.id);
+    closeModal();
+  });
+};
+
+const handleBandwidthPackageClick = (pkg: BandwidthPackage) => {
+  if (!selectedNftForUpgrade.value) {
+    throw new Error('No NFT selected');
+  }
+
+  processingNftPackageIds.value.add(pkg.id);
+
+  upgradeBandwidth(selectedNftForUpgrade.value, pkg).then(() => {
+    processingNftPackageIds.value.delete(pkg.id);
     closeModal();
   });
 };
@@ -106,6 +120,20 @@ const pollinationXWidget = computed(() => {
 const pollinationXModalInfo = computed(() => ({
   title: selectedNftForUpgrade.value ? 'Upgrade existing PX sNFT' : 'Mint new PX sNFT',
 }));
+
+const packagesList = computed(() => {
+  if (!pxNfts.value) {
+    return [];
+  }
+
+  return selectedNftForUpgrade.value
+    ? [...pxNfts.value.bandwidthPackages, ...pxNfts.value.packages]
+    : [...pxNfts.value.packages];
+});
+
+const isNftPackage = (pkg: Package): pkg is NftPackage => {
+  return typeof pkg === 'object' && 'size' in pkg && 'bandwidthLimit' in pkg;
+};
 </script>
 
 <template>
@@ -196,28 +224,28 @@ const pollinationXModalInfo = computed(() => ({
         }}
       </span>
     </BaseParagraph>
-    <div class="grid grid-cols-2 gap-2 p-4 pt-0">
+    <div v-if="pxNfts" class="grid grid-cols-2 gap-2 p-4 pt-0">
       <div
-        v-for="nftPackage in pxNfts?.packages"
-        :key="nftPackage.id"
+        v-for="pkg in packagesList"
+        :key="pkg.id"
         class="cursor-pointer rounded-xl border border-muted-200 p-4 text-center hover:bg-muted-100 dark:border-muted-700 hover:dark:bg-muted-900"
       >
         <div
           :class="{
-            'cursor-not-allowed opacity-30': isNftPackageDisabled(nftPackage),
+            'cursor-not-allowed opacity-30': isNftPackage(pkg) && isNftPackageDisabled(pkg),
           }"
-          @click="handleNftPackageClick(nftPackage)"
+          @click="isNftPackage(pkg) ? handleNftPackageClick(pkg) : handleBandwidthPackageClick(pkg)"
         >
           <img
             src="/img/logos/pollination-x-icon.svg"
-            :class="{ 'animate-spin': processingNftPackageIds.has(nftPackage.id) }"
+            :class="{ 'animate-spin': processingNftPackageIds.has(pkg.id) }"
             class="mx-auto mb-2 h-8 w-8"
             alt="PollinationX icon"
           />
           <div>
-            <span class="block text-sm">Size: {{ nftPackage.size }} {{ nftPackage.storageUnit }}</span>
-            <span class="block text-sm">Price: {{ formatEther(nftPackage.price) }} {{ pxNfts?.symbol }}</span>
-            <span class="block text-sm">Bandwidth: {{ nftPackage?.bandwidthLimit }}</span>
+            <span v-if="isNftPackage(pkg)" class="block text-sm">Size: {{ pkg.size }} {{ pkg.storageUnit }}</span>
+            <span class="block text-sm">Price: {{ formatEther(pkg.price) }} {{ pxNfts?.symbol }}</span>
+            <span class="block text-sm">Bandwidth: {{ isNftPackage(pkg) ? pkg.bandwidthLimit : pkg.bandwidth }}</span>
           </div>
         </div>
       </div>

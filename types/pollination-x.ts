@@ -76,9 +76,18 @@ export type NftPackage = {
   storageUnit: string;
 };
 
+export type BandwidthPackage = {
+  id: number;
+  bandwidth: number;
+  price: bigint;
+};
+
+export type Package = NftPackage | BandwidthPackage;
+
 export type GetNft = {
   nfts?: Nft[];
   packages: NftPackage[];
+  bandwidthPackages: BandwidthPackage[];
   success?: boolean;
   error?: any;
   totalCount?: number;

@@ -15,8 +15,8 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1
       '@4thtech-sdk/ethereum':
-        specifier: ^0.5.2
-        version: 0.5.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        specifier: ^0.5.3
+        version: 0.5.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@4thtech-sdk/storage':
         specifier: ^0.3.5
         version: 0.3.5
@@ -138,8 +138,8 @@ packages:
   '@4thtech-sdk/encryptor@0.3.1':
     resolution: {integrity: sha512-81H3oEqTDtbstvaD9NiU/0VdbeSHUmF5ANPfY3ie2nj/d+ikhLIJKleH49o/Lg1YVuw4165+WIZjWShTrN72nw==}
 
-  '@4thtech-sdk/ethereum@0.5.2':
-    resolution: {integrity: sha512-QSPqSi9ysTXXGw/WO9yMCmreSN4Igs3sREby1C5V3omiR7+1Jsq/T4f0LOJnwtIc1DYD4bVUt+Law+koZT8ljQ==}
+  '@4thtech-sdk/ethereum@0.5.3':
+    resolution: {integrity: sha512-t2nKxuckcMFBm+ciAS6sQPw6Cv1cV3a7PQjcXy0kGxhd4o7dIbNwmA2pLkwiOtMPv89NAqxhialnlA6cbBPMQg==}
 
   '@4thtech-sdk/storage@0.3.5':
     resolution: {integrity: sha512-oLlLnnLePoXMRVd6WEvjLSIuurbKZsEBspGYaoaEzkOj2xwuWciayvH5ris1pwBMo8qMMIetxkp7kdNP49OgDA==}
@@ -1918,8 +1918,8 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
-  axios@1.7.2:
-    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
+  axios@1.7.3:
+    resolution: {integrity: sha512-Ar7ND9pU99eJ9GpoGQKhKf58GpUOgnzuaB7ueNQ5BMi0p+LZ5oaEnfF999fAArcTIBwXTCHAmGcHOZJaWPq9Nw==}
 
   b4a@1.6.4:
     resolution: {integrity: sha512-fpWrvyVHEKyeEvbKZTVOeZF3VSKKWtJxFIxX/jaVPf+cLbGUSitjb49pHLqPV2BUNNZ0LcoeEGfE/YCpyDYHIw==}
@@ -2792,8 +2792,8 @@ packages:
   eth-rpc-errors@4.0.2:
     resolution: {integrity: sha512-n+Re6Gu8XGyfFy1it0AwbD1x0MUzspQs0D5UiPs1fFPCr6WAwZM+vbIhXheBFrpgosqN9bs5PqlB4Q61U/QytQ==}
 
-  ethers@6.13.1:
-    resolution: {integrity: sha512-hdJ2HOxg/xx97Lm9HdCWk949BfYqYWpyw4//78SiwOLgASyfrNszfMUNB2joKjvGUdwhHfaiMMFFwacVVoLR9A==}
+  ethers@6.13.2:
+    resolution: {integrity: sha512-9VkriTTed+/27BGuY1s0hf441kqwHJ1wtN2edksEtiRvXx+soxRX3iSXTfFqq2+YwrOqbDoTHjIhQnjJRlzKmg==}
     engines: {node: '>=14.0.0'}
 
   eventemitter3@4.0.7:
@@ -5653,6 +5653,17 @@ packages:
       '@vue/composition-api':
         optional: true
 
+  vue-demi@0.14.10:
+    resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
+    engines: {node: '>=12'}
+    hasBin: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+
   vue-demi@0.14.6:
     resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}
     engines: {node: '>=12'}
@@ -5666,17 +5677,6 @@ packages:
 
   vue-demi@0.14.7:
     resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==}
-    engines: {node: '>=12'}
-    hasBin: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-
-  vue-demi@0.14.8:
-    resolution: {integrity: sha512-Uuqnk9YE9SsWeReYqK2alDI5YzciATE0r2SkA6iMAtuXvNTMNACJLJEXNXaEy94ECuBe4Sk6RzRU80kjdbIo1Q==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
@@ -5926,16 +5926,16 @@ snapshots:
 
   '@4thtech-sdk/encryptor@0.3.1': {}
 
-  '@4thtech-sdk/ethereum@0.5.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+  '@4thtech-sdk/ethereum@0.5.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
-      ethers: 6.13.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ethers: 6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
   '@4thtech-sdk/storage@0.3.5':
     dependencies:
-      axios: 1.7.2
+      axios: 1.7.3
       form-data: 4.0.0
       tar-stream: 3.1.6
     transitivePeerDependencies:
@@ -6399,7 +6399,7 @@ snapshots:
   '@floating-ui/vue@1.0.2(vue@3.3.8(typescript@5.2.2))':
     dependencies:
       '@floating-ui/dom': 1.5.3
-      vue-demi: 0.14.8(vue@3.3.8(typescript@5.2.2))
+      vue-demi: 0.14.10(vue@3.3.8(typescript@5.2.2))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -7745,7 +7745,7 @@ snapshots:
       '@types/web-bluetooth': 0.0.20
       '@vueuse/metadata': 10.6.1
       '@vueuse/shared': 10.6.1(vue@3.3.8(typescript@5.2.2))
-      vue-demi: 0.14.8(vue@3.3.8(typescript@5.2.2))
+      vue-demi: 0.14.10(vue@3.3.8(typescript@5.2.2))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -7777,7 +7777,7 @@ snapshots:
 
   '@vueuse/shared@10.6.1(vue@3.3.8(typescript@5.2.2))':
     dependencies:
-      vue-demi: 0.14.8(vue@3.3.8(typescript@5.2.2))
+      vue-demi: 0.14.10(vue@3.3.8(typescript@5.2.2))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -8532,7 +8532,7 @@ snapshots:
 
   available-typed-arrays@1.0.5: {}
 
-  axios@1.7.2:
+  axios@1.7.3:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -9566,7 +9566,7 @@ snapshots:
     dependencies:
       fast-safe-stringify: 2.1.1
 
-  ethers@6.13.1(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  ethers@6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     dependencies:
       '@adraffy/ens-normalize': 1.10.1
       '@noble/curves': 1.2.0
@@ -12615,7 +12615,7 @@ snapshots:
       eventemitter3: 4.0.7
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.2.2)(utf-8-validate@5.0.10)(zod@3.22.4)
       vue: 3.3.8(typescript@5.2.2)
-      vue-demi: 0.14.8(vue@3.3.8(typescript@5.2.2))
+      vue-demi: 0.14.10(vue@3.3.8(typescript@5.2.2))
     optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
@@ -12813,15 +12813,15 @@ snapshots:
     dependencies:
       vue: 3.3.8(typescript@5.2.2)
 
+  vue-demi@0.14.10(vue@3.3.8(typescript@5.2.2)):
+    dependencies:
+      vue: 3.3.8(typescript@5.2.2)
+
   vue-demi@0.14.6(vue@3.3.8(typescript@5.2.2)):
     dependencies:
       vue: 3.3.8(typescript@5.2.2)
 
   vue-demi@0.14.7(vue@3.3.8(typescript@5.2.2)):
-    dependencies:
-      vue: 3.3.8(typescript@5.2.2)
-
-  vue-demi@0.14.8(vue@3.3.8(typescript@5.2.2)):
     dependencies:
       vue: 3.3.8(typescript@5.2.2)
 
