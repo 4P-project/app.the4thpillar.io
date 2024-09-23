@@ -10,8 +10,10 @@ const description = computed(() => {
 
   return isPro.value
     ? 'You are enjoying the full benefits of our Pro membership! Thank you for your support. Explore all the advanced features and make the most out of your experience.'
-    : 'Unlock advanced features and enhance your experience by upgrading to the Pro version. Fund your account with just FOUR tokens to enjoy all the benefits of a Pro membership.';
+    : 'Unlock advanced features and enhance your experience by upgrading to the Pro version. Fund your account with FOUR tokens to enjoy all the benefits of a Pro membership.';
 });
+
+const hasSwapLink = computed(() => !!upgradeNowLink.value?.swapLink);
 </script>
 
 <template>
@@ -35,8 +37,20 @@ const description = computed(() => {
       </BaseParagraph>
     </div>
     <!-- Action -->
-    <BaseButton v-if="!isPro && upgradeNowLink" :href="upgradeNowLink" target="_blank" color="primary" class="w-full">
-      Upgrade Now
-    </BaseButton>
+    <div v-if="!isPro && upgradeNowLink">
+      <BaseButton :href="upgradeNowLink.buyLink" target="_blank" color="primary" class="w-full">
+        {{ hasSwapLink ? 'Buy Tokens' : 'Upgrade Now' }}
+      </BaseButton>
+      <BaseButton
+        v-if="hasSwapLink"
+        :href="upgradeNowLink.swapLink"
+        target="_blank"
+        color="primary"
+        flavor="pastel"
+        class="mt-2 w-full"
+      >
+        Swap Tokens
+      </BaseButton>
+    </div>
   </BaseCard>
 </template>

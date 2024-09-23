@@ -16,6 +16,18 @@ export function usePollinationX() {
 
   const signature = useStorage(`pollination-x-${address.value}`, '');
 
+  enum PollinationXFunction {
+    Mint = 'mint',
+    UpgradeTokenPackage = 'upgradeTokenPackage',
+    BuyMoreBandwidth = 'buyMoreBandwidth',
+  }
+
+  const gasLimits: { [key in PollinationXFunction]: bigint } = {
+    [PollinationXFunction.Mint]: 4_000_000n,
+    [PollinationXFunction.UpgradeTokenPackage]: 1_300_000n,
+    [PollinationXFunction.BuyMoreBandwidth]: 1_000_000n,
+  };
+
   const pollinationXConfig: PollinationXConfig = {
     url: 'https://u4jc7p.pollinationx.io',
     authMessage:
@@ -67,11 +79,14 @@ export function usePollinationX() {
       signature: signature.value,
     });
 
-    const response = await fetch(`${pollinationXConfig.url}/auth/v2/login?${queryParams.toString()}`, {
-      method: 'GET',
-    });
-
-    return response.json();
+    try {
+      const response = await fetch(`${pollinationXConfig.url}/auth/v2/login?${queryParams.toString()}`, {
+        method: 'GET',
+      });
+      return response.json();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    }
   };
 
   const connectStorageNft = async () => {
@@ -96,7 +111,7 @@ export function usePollinationX() {
     const nftPackagePrice = isFreeMint ? 0n : BigInt(nftPackage.price);
 
     try {
-      const txReceipt = await sendTransaction('mint', [nftPackageId], nftPackagePrice);
+      const txReceipt = await sendTransaction(PollinationXFunction.Mint, [nftPackageId], nftPackagePrice);
 
       if (txReceipt.status === 'success') {
         toast.success('Minted');
@@ -115,7 +130,7 @@ export function usePollinationX() {
 
     try {
       const txReceipt = await sendTransaction(
-        'upgradeTokenPackage',
+        PollinationXFunction.UpgradeTokenPackage,
         [parseInt(selectedNftForUpgrade.id.tokenId), nftPackage.id],
         BigInt(nftPackage.price),
       );
@@ -137,7 +152,7 @@ export function usePollinationX() {
 
     try {
       const txReceipt = await sendTransaction(
-        'buyMoreBandwidth',
+        PollinationXFunction.BuyMoreBandwidth,
         [parseInt(selectedNftForUpgrade.id.tokenId), pkg.id],
         BigInt(pkg.price),
       );
@@ -153,7 +168,7 @@ export function usePollinationX() {
     }
   };
 
-  const sendTransaction = async (functionName: string, args: any[], value: bigint = 0n) => {
+  const sendTransaction = async (functionName: PollinationXFunction, args: any[], value: bigint = 0n) => {
     const encodedData = encodeFunctionData({
       abi: pollinationXAbi,
       functionName,
@@ -163,6 +178,7 @@ export function usePollinationX() {
     const hash = await walletClient.sendTransaction({
       data: encodedData,
       to: pxNfts.value?.contractAddress as Address,
+      gas: gasLimits[functionName],
       value,
     });
 
