@@ -13,7 +13,7 @@ const description = computed(() => {
     : 'Unlock advanced features and enhance your experience by upgrading to the Pro version. Fund your account with FOUR tokens to enjoy all the benefits of a Pro membership.';
 });
 
-const hasSwapLink = computed(() => !!upgradeNowLink.value?.swapLink);
+const hasSwapLink = computed(() => !!upgradeNowLink?.value?.swapLink);
 </script>
 
 <template>

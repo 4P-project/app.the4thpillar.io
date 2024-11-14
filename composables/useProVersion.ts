@@ -34,7 +34,7 @@ export function useProVersion() {
   const isProEnabled = computed(() => !!tokenAddress.value);
   const upgradeNowLink = computed(() => upgradeNowLinks[chainId.value]);
 
-  if (!tokenAddress) {
+  if (!tokenAddress.value) {
     return {
       isProEnabled,
       isPro: computed(() => false),
