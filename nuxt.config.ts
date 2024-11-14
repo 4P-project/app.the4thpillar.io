@@ -7,11 +7,13 @@ export default defineNuxtConfig({
   ssr: false,
   extends: ['@shuriken-ui/nuxt'],
   modules: ['@use-wagmi/nuxt', '@nuxt/image', '@pinia/nuxt'],
+
   css: [
     '@fontsource-variable/space-grotesk/index.css',
     '@fontsource-variable/karla/index.css',
     'vue-toastification/dist/index.css',
   ],
+
   runtimeConfig: {
     public: {
       walletConnectId: process.env.WALLET_CONNECT_ID,
@@ -23,6 +25,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   vite: {
     resolve: {
       alias: {
@@ -47,4 +50,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  compatibilityDate: '2024-09-17',
 });
