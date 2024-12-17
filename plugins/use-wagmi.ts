@@ -3,6 +3,8 @@ import {
   fantom,
   oasisSaphire,
   sonicTestnet,
+  citrea,
+  sonic,
 } from '@4thtech-sdk/ethereum';
 
 import { CoinbaseWalletConnector } from 'use-wagmi/connectors/coinbaseWallet';
@@ -17,6 +19,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       fantom,
       oasisSaphire,
       sonicTestnet,
+      citrea,
+      sonic,
     ],
     [publicProvider()],
   );
