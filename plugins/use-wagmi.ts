@@ -2,8 +2,6 @@ import { UseWagmiPlugin, configureChains, createConfig } from 'use-wagmi';
 import {
   fantom,
   oasisSaphire,
-  sonicTestnet,
-  citrea,
   sonic,
 } from '@4thtech-sdk/ethereum';
 
@@ -18,8 +16,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     [
       fantom,
       oasisSaphire,
-      sonicTestnet,
-      citrea,
       sonic,
     ],
     [publicProvider()],
