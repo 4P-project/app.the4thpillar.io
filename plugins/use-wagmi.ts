@@ -2,6 +2,7 @@ import { UseWagmiPlugin, configureChains, createConfig } from 'use-wagmi';
 import {
   fantom,
   oasisSaphire,
+  polygon,
   sonic,
 } from '@4thtech-sdk/ethereum';
 
@@ -16,6 +17,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     [
       fantom,
       oasisSaphire,
+      polygon,
       sonic,
     ],
     [publicProvider()],
