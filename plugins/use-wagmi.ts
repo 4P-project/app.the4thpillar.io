@@ -1,7 +1,5 @@
 import { UseWagmiPlugin, configureChains, createConfig } from 'use-wagmi';
 import {
-  fantom,
-  oasisSaphire,
   polygon,
   sonic,
 } from '@4thtech-sdk/ethereum';
@@ -15,8 +13,6 @@ import { publicProvider } from 'use-wagmi/providers/public';
 export default defineNuxtPlugin((nuxtApp) => {
   const { chains, publicClient, webSocketPublicClient } = configureChains(
     [
-      fantom,
-      oasisSaphire,
       polygon,
       sonic,
     ],
